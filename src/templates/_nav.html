@@ -1,0 +1,25 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">Data en wat nu?</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('questions.question') }}">Start vragenlijst</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+          {% if current_user.admin %}
+            <li><a href="{{ url_for('main.admin') }}">Admin</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('users.logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('users.login') }}">Login</a></li>
+        {% endif %}
+      </ul>    
+    </div>
+  </div>
+</nav>
