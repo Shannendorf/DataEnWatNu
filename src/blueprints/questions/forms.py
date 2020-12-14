@@ -26,3 +26,5 @@ class BoolQuestionForm(FlaskForm):
 class MCQuestionForm(FlaskForm):
     answer = SelectField('Selecteer een optie')
     submit = SubmitField('Bevestig')
+
+

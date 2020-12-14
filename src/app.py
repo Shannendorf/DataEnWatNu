@@ -6,10 +6,11 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 
 from flask.wrappers import Request
 
-from src.blueprints import main, users, questions
+from src.blueprints import main, questions
 from src.errors import bp as errors_bp
-from src.extensions import bootstrap, db, login, migrate
+from src.extensions import bootstrap, db, migrate
 from src.utils import RequestFormatter
+from src.models import QuestionType
 
 
 def create_app(config_object: str = 'src.settings') -> Flask:
@@ -28,13 +29,11 @@ def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
-    login.init_app(app)
 
 
 def register_blueprints(app):
     app.register_blueprint(errors_bp)
     app.register_blueprint(main.bp)
-    app.register_blueprint(users.bp)
     app.register_blueprint(questions.bp)
 
 
@@ -42,8 +41,6 @@ def register_shellcontext(app):
     def shell_context():
         return {
             'db': db,
-            'User': users.models.User,
-            'ApiKey': users.models.ApiKey
         }
     app.shell_context_processor(shell_context)
 
