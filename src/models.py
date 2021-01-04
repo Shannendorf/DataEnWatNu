@@ -13,7 +13,7 @@ class QuestionType(Model):
     function = Column(String(128))
     form = Column(String(128))
 
-    type_question = relationship('Question', backref='questiontype', lazy='dynamic')
+    type_question = relationship('Question', backref='question_type', lazy='dynamic')
 
 
 class Question(Model):
@@ -24,7 +24,7 @@ class Question(Model):
     options = Column(ARRAY(String))
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
 
-    answer_question = relationship('Answer', backref='answeredquestion', lazy='dynamic')
+    answer_question = relationship('Answer', backref='answered_question', lazy='dynamic')
 
 
 class Answer(Model):
@@ -32,7 +32,7 @@ class Answer(Model):
 
     answeredquestion = Column(Integer, ForeignKey('Question.id'), primary_key=True)
     answer = Column(String(256))
-    case = Column(Integer, ForeignKey('Case.id'))
+    case = Column(Integer, ForeignKey('Case.id'), primary_key=True)
 
 
 class Case(Model):
@@ -41,4 +41,4 @@ class Case(Model):
     id = Column(Integer, primary_key=True)
     start = Column(DateTime)
 
-    answer_case = relationship('Answer', backref='case', lazy='dynamic')
+    answer_case = relationship('Answer', backref='sessioncase', lazy='dynamic')

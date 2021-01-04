@@ -1,11 +1,11 @@
-2021-01-04 13:16:56,899 ERROR: Exception on /questionlist/0 [POST] [in D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py:1891] - [from 127.0.0.1 to http://127.0.0.1:5000/questionlist/0]
+2021-01-04 13:03:28,829 ERROR: Exception on /questionlist/0 [POST] [in D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py:1891] - [from 127.0.0.1 to http://127.0.0.1:5000/questionlist/0]
 Traceback (most recent call last):
   File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\sqlalchemy\engine\base.py", line 1276, in _execute_context
     self.dialect.do_execute(
   File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
     cursor.execute(statement, parameters)
-psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "Answer_pkey"
-DETAIL:  Key (answeredquestion)=(1) already exists.
+psycopg2.errors.ForeignKeyViolation: insert or update on table "Answer" violates foreign key constraint "Answer_case_fkey"
+DETAIL:  Key (case)=(12) is not present in table "Case".
 
 
 The above exception was the direct cause of the following exception:
@@ -24,7 +24,7 @@ Traceback (most recent call last):
   File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
   File "D:\Documenten\Projects\DataEnWatNu\src\blueprints\questions\routes.py", line 19, in question
-    Answer.create(answer=answer, answeredquestion=question.id)
+    Answer.create(answer=answer, answeredquestion=question.id, case=session_id)
   File "D:\Documenten\Projects\DataEnWatNu\src\database.py", line 42, in create
     instance = cls(**kwargs)
   File "<string>", line 4, in __init__
@@ -84,9 +84,43 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\sqlalchemy\engine\default.py", line 593, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "Answer_pkey"
-DETAIL:  Key (answeredquestion)=(1) already exists.
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.ForeignKeyViolation) insert or update on table "Answer" violates foreign key constraint "Answer_case_fkey"
+DETAIL:  Key (case)=(12) is not present in table "Case".
 
 [SQL: INSERT INTO "Answer" (answeredquestion, answer, "case") VALUES (%(answeredquestion)s, %(answer)s, %(case)s)]
-[parameters: {'answeredquestion': 1, 'answer': '1w', 'case': None}]
+[parameters: {'answeredquestion': 1, 'answer': '123', 'case': 12}]
 (Background on this error at: http://sqlalche.me/e/13/gkpj)
+2021-01-04 13:11:21,522 ERROR: Exception on /questionlist/3 [GET] [in D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py:1891] - [from 127.0.0.1 to http://127.0.0.1:5000/questionlist/3]
+Traceback (most recent call last):
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "D:\Documenten\Projects\DataEnWatNu\src\blueprints\questions\routes.py", line 12, in question
+    question = Question.get_by_id(question_order[question_id])
+IndexError: list index out of range
+2021-01-04 13:11:21,522 ERROR: Exception on /questionlist/3 [GET] [in D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py:1891] - [from 127.0.0.1 to http://127.0.0.1:5000/questionlist/3]
+Traceback (most recent call last):
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Documenten\Projects\DataEnWatNu\env\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "D:\Documenten\Projects\DataEnWatNu\src\blueprints\questions\routes.py", line 12, in question
+    question = Question.get_by_id(question_order[question_id])
+IndexError: list index out of range

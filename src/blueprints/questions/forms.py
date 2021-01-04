@@ -1,7 +1,7 @@
 # Forms for the questions module
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, BooleanField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 
 
 # Form for open question
@@ -28,3 +28,14 @@ class MCQuestionForm(FlaskForm):
     submit = SubmitField('Bevestig')
 
 
+# Form for questions that require an email adress input
+class EmailForm(FlaskForm):
+    answer = StringField('Voer hier uw e-mailadres in als u het rapport toegestuurd wilt krijgen.', validators=[Email()])
+    submit = SubmitField('Bevestig')
+
+string_to_form = {
+    "open" : OpenQuestionForm
+}
+
+def get_form(formtype):
+    return string_to_form[formtype]()

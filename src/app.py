@@ -20,8 +20,8 @@ def create_app(config_object: str = 'src.settings') -> Flask:
     register_extensions(app)
     register_blueprints(app)
     register_shellcontext(app)
-    if not app.config['TESTING']:
-        register_logging(app)
+    #if not app.config['TESTING']:
+        #register_logging(app)
     return app
 
 
