@@ -13,10 +13,11 @@ def question(question_id):
         session_id = case.id
 
     question_order = [1,3,2]
-    if question_order[question_id]:
+    if len(question_order) > question_id:
         question = Question.get_by_id(question_order[question_id])
     else:
-        return redirect(url_for('questions.advice'))            
+        return redirect(url_for('questions.advice'))
+                    
     formtype = QuestionType.query().filter_by(name=Question.questiontype).first().name
     form = get_form(formtype)
     form.answer.label.text = question.question
@@ -28,10 +29,11 @@ def question(question_id):
 
     if form.validate_on_submit():
         answer = form.answer.data
-        Answer.create(answer=answer, answeredquestion=question.id, case=session_id)
-
-        if question_order[-1] == question_id:
-            return redirect(url_for('questions.advice'))
+        if Answer.query().filter_by(case=session_id, answeredquestion=question.id).count() != 0:
+            to_change = Answer.query().filter_by(case=session_id, answeredquestion=question.id).first()
+            to_change.update(answer=answer)
+        else:
+            Answer.create(answer=answer, answeredquestion=question.id, case=session_id)
 
         return redirect(url_for('questions.question', question_id=question_id+1))
     return render_template('form.html', form=form)
