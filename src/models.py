@@ -2,6 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from secrets import token_urlsafe
 
 from src.database import Model
 
@@ -32,13 +33,20 @@ class Answer(Model):
 
     answeredquestion = Column(Integer, ForeignKey('Question.id'), primary_key=True)
     answer = Column(String(256))
-    case = Column(Integer, ForeignKey('Case.id'), primary_key=True)
+    case = Column(String, ForeignKey('Case.id'), primary_key=True)
 
 
 class Case(Model):
     __tablename__ = 'Case'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     start = Column(DateTime)
 
     answer_case = relationship('Answer', backref='sessioncase', lazy='dynamic')
+
+    @classmethod
+    def create_case(cls):
+        c_id = token_urlsafe(128)
+        while cls.query().filter_by(id=c_id).with_entities(cls.id).count() != 0:
+            c_id = token_urlsafe(128)
+        return cls.create(id=c_id)
