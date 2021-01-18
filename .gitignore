@@ -169,6 +169,7 @@ dmypy.json
 pyvenv.cfg
 .env
 .venv
+linuxenv/
 env/
 venv/
 ENV/

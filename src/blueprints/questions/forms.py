@@ -31,7 +31,7 @@ class MCQuestionForm(FlaskForm):
 # Form for Likert questions
 class LikertQuestionForm(FlaskForm):
     nr = 0
-    answer = RadioField()
+    answer = RadioField(choices=["option1", "option2", "option3"])
     answer2 = RadioField()
     answer3 = RadioField()
     answer4 = RadioField()

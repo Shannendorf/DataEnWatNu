@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, request, make_response
 
 from src.blueprints.questions import bp
 from src.blueprints.questions.forms import OpenQuestionForm, IntQuestionForm, BoolQuestionForm, MCQuestionForm, EmailForm, get_form
+from src.blueprints.questions.report_generator import generate_report
 from src.models import Question, QuestionType, Answer, Case
 
 # Route for the question page (both GET and POST)
@@ -29,17 +30,20 @@ def question(question_id):
             answeroptions.append(answeroption)
         form.answer.choices = answeroptions
     
-    """
     if formtype == "likert":
         form.nr = len(question.options)
         form.answer2.choices = answeroptions
         form.answer3.choices = answeroptions
         form.answer4.choices = answeroptions
         form.answer5.choices = answeroptions
-        """ 
 
     # Sets the cookie
     if request.method == "GET":
+        """
+        if formtype == "Likert":
+            resp = make_response(render_template('likert.html', form=form, questions=["vraag 1?"]))
+        else:
+        """
         resp = make_response(render_template('form.html', form=form))
         resp.set_cookie('sessionID', session_id)
         return resp
@@ -53,6 +57,9 @@ def question(question_id):
         else:
             Answer.create(answer=answer, answeredquestion=question.id, case=session_id)
         return redirect(url_for('questions.question', question_id=question_id+1))
+    """if formtype == "likert":
+        return render_template('likert.html', form=form, questions=["vraag 1?"])
+    else:""" 
     return render_template('form.html', form=form)
 
 
@@ -71,6 +78,9 @@ def advice():
     for a in answers:
         q = Question.query().filter_by(id=a.answeredquestion).first()
         questions_and_answers[q] = a
+    form = EmailForm()
     resp = make_response(render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), questions_and_answers=questions_and_answers))
     resp.set_cookie('sessionID', '', expires=0)
+    if form.validate_on_submit():
+        generate_report()
     return resp
