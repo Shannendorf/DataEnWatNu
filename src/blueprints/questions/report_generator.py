@@ -4,7 +4,7 @@ from jinja2 import Template
 from pdflatex import PDFLaTeX
 
 
-def generate_report():
+def generate_report(answers_list):
     latex_jinja_env = jinja2.Environment(
     block_start_string = '\BLOCK{',
     block_end_string = '}',
@@ -19,7 +19,7 @@ def generate_report():
     loader = jinja2.FileSystemLoader(os.path.abspath('.'))
     )
     template = latex_jinja_env.get_template('src/templates/report/report.tex')
-    document = template.render(section1='Long Form', section2='Short Form')
+    document = template.render(section1='Rapport', answers_list=answers_list)
     with open("src/templates/report/test.tex",'w') as output:
         output.write(document)
     pdfl = PDFLaTeX.from_texfile('src/templates/report/test.tex')

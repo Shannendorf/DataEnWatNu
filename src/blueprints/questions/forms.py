@@ -44,6 +44,7 @@ class EmailForm(FlaskForm):
     answer = StringField('Voer hier uw e-mailadres in als u het rapport toegestuurd wilt krijgen.', validators=[Email()])
     submit = SubmitField('Bevestig')
 
+
 string_to_form = {
     "open" : OpenQuestionForm,
     "multiplechoice" : MCQuestionForm,

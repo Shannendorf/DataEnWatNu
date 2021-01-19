@@ -5,13 +5,27 @@ from src.blueprints.questions.forms import OpenQuestionForm, IntQuestionForm, Bo
 from src.blueprints.questions.report_generator import generate_report
 from src.models import Question, QuestionType, Answer, Case
 
+
+# Route for question startpage
+@bp.route('/questions/start', methods=['GET', 'POST'])
+def start():
+    case = Case.create_case()
+    session_id = case.id
+    url = url_for("questions.question", question_id=0)
+    html = f"<meta http-equiv='refresh' content='1; URL={url}'/>"
+
+    # Sets the cookie
+    resp = make_response(html)
+    resp.set_cookie('sessionID', session_id, max_age=10800)
+    return resp
+
+
 # Route for the question page (both GET and POST)
 @bp.route('/questionlist/<int:question_id>', methods=['GET', 'POST'])
 def question(question_id):
     session_id = request.cookies.get('sessionID')
     if not session_id:
-        case = Case.create_case()
-        session_id = case.id
+        return redirect(url_for('questions.start'))        
 
     # Retrieves correct question or redirects to endpage
     question_order = [1,4,3,2]
@@ -37,17 +51,6 @@ def question(question_id):
         form.answer4.choices = answeroptions
         form.answer5.choices = answeroptions
 
-    # Sets the cookie
-    if request.method == "GET":
-        """
-        if formtype == "Likert":
-            resp = make_response(render_template('likert.html', form=form, questions=["vraag 1?"]))
-        else:
-        """
-        resp = make_response(render_template('form.html', form=form))
-        resp.set_cookie('sessionID', session_id)
-        return resp
-
     # Saves answer to db
     if form.validate_on_submit():
         answer = form.answer.data
@@ -72,15 +75,12 @@ def advice():
     if not session_id:
         redirect(url_for('main.index'))
 
-    # Renders the endpage and resets the session_id in the cookie
+    # Renders the endpage
     answers = Answer.query().filter_by(case=session_id).all()
-    questions_and_answers = {}
-    for a in answers:
-        q = Question.query().filter_by(id=a.answeredquestion).first()
-        questions_and_answers[q] = a
     form = EmailForm()
-    resp = make_response(render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), questions_and_answers=questions_and_answers))
-    resp.set_cookie('sessionID', '', expires=0)
     if form.validate_on_submit():
-        generate_report()
-    return resp
+        answers_list = []
+        for answer in answers:
+            answers_list.append((answer.answered_question.question, answer.answer),)
+        generate_report(answers_list)
+    return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)

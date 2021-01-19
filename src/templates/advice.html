@@ -12,9 +12,8 @@
 </div>
 <br>
 <h2>Gestelde vragen en antwoorden</h2>
-{% set i = 0 %}
-{% for qa in questions_and_answers %}
+{% for answer in answers %}
 <br><br>
-<b>{{ qa.question }}</b> : {{ questions_and_answers[qa].answer }}
+<b>{{ answer.answered_question.question }}</b> : {{ answer.answer }}
 {% endfor %}
 {% endblock %}
