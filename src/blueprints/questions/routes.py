@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, make_response
+from flask import render_template, redirect, url_for, request, make_response, send_file
 
 from src.blueprints.questions import bp
 from src.blueprints.questions.forms import OpenQuestionForm, IntQuestionForm, BoolQuestionForm, MCQuestionForm, EmailForm, get_form
@@ -84,3 +84,13 @@ def advice():
             answers_list.append((answer.answered_question.question, answer.answer),)
         generate_report(answers_list)
     return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)
+
+# Route for report download
+@bp.route('/report', methods=['GET'])
+def report():
+    return send_file(
+    'pdf_output/test.pdf',
+    mimetype='application/pdf',
+    attachment_filename='test.pdf',
+    as_attachment=True
+    )
