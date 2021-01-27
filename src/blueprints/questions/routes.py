@@ -82,17 +82,20 @@ def advice():
     answers_list = []
     for answer in answers:
         answers_list.append((answer.answered_question.question, answer.answer),)
-    generate_report(answers_list)
+    generate_report(answers_list, session_id)
     if form.validate_on_submit():
-        send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], current_app.config['ADMINS'], 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.')
+        send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], current_app.config['ADMINS'], 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
     return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)
 
 # Route for report download
 @bp.route('/report', methods=['GET'])
 def report():
+    session_id = request.cookies.get('sessionID')
+    if not session_id:
+        redirect(url_for('main.index'))
     return send_file(
-    'pdf_output/test.pdf',
+    'output/pdf/'+session_id+'.pdf',
     mimetype='application/pdf',
-    attachment_filename='test.pdf',
+    attachment_filename='DataEnWatNu.pdf',
     as_attachment=True
     )
