@@ -11,6 +11,7 @@ from src.errors import bp as errors_bp
 from src.extensions import bootstrap, db, migrate
 from src.utils import RequestFormatter
 from src.models import QuestionType
+from src.blueprints.questions.email import mail
 
 
 def create_app(config_object: str = 'src.settings') -> Flask:
@@ -29,6 +30,7 @@ def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
+    mail.init_app(app)
 
 
 def register_blueprints(app):

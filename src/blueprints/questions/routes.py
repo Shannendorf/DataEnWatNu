@@ -1,8 +1,9 @@
-from flask import render_template, redirect, url_for, request, make_response, send_file
+from flask import render_template, redirect, url_for, request, make_response, send_file, current_app
 
 from src.blueprints.questions import bp
 from src.blueprints.questions.forms import OpenQuestionForm, IntQuestionForm, BoolQuestionForm, MCQuestionForm, EmailForm, get_form
 from src.blueprints.questions.report_generator import generate_report
+from src.blueprints.questions.email import send_email
 from src.models import Question, QuestionType, Answer, Case
 
 
@@ -78,11 +79,12 @@ def advice():
     # Renders the endpage
     answers = Answer.query().filter_by(case=session_id).all()
     form = EmailForm()
+    answers_list = []
+    for answer in answers:
+        answers_list.append((answer.answered_question.question, answer.answer),)
+    generate_report(answers_list)
     if form.validate_on_submit():
-        answers_list = []
-        for answer in answers:
-            answers_list.append((answer.answered_question.question, answer.answer),)
-        generate_report(answers_list)
+        send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], current_app.config['ADMINS'], 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.')
     return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)
 
 # Route for report download

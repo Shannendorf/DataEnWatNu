@@ -41,7 +41,7 @@ class LikertQuestionForm(FlaskForm):
 
 # Form for questions that require an email adress input
 class EmailForm(FlaskForm):
-    answer = StringField('Voer hier uw e-mailadres in als u het rapport toegestuurd wilt krijgen.', validators=[Email()])
+    answer = StringField('Voer hier uw e-mailadres in als u het rapport toegestuurd wilt krijgen.', validators=[Email(), DataRequired()])
     submit = SubmitField('Bevestig')
 
 
