@@ -84,7 +84,8 @@ def advice():
         answers_list.append((answer.answered_question.question, answer.answer),)
     generate_report(answers_list, session_id)
     if form.validate_on_submit():
-        send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], current_app.config['ADMINS'], 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
+        email_address = [form.answer.data]
+        send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], email_address, 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
     return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)
 
 # Route for report download
