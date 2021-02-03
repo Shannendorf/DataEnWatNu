@@ -1,6 +1,9 @@
 ### Projects specific ###
 *.db
-*.log
+*.log.*
+src/output/pdf/*.pdf
+src/output/tex/*.tex
+
 
 
 # Created by https://www.gitignore.io/api/flask,python,virtualenv,visualstudiocode
