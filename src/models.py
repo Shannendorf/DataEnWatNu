@@ -1,10 +1,19 @@
 # Models
 
-from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
+    DateTime, Table
+from sqlalchemy.orm import backref, relationship
 from secrets import token_urlsafe
 
 from src.database import Model
+
+
+QuestionGroupQuestion = Table(
+    'QuestionGroupQuestion',
+    Model.metadata,
+    Column('question_group_id', Integer, ForeignKey('QuestionGroup.id')),
+    Column('question_id', Integer, ForeignKey('Question.id'))
+)
 
 
 class QuestionType(Model):
@@ -26,6 +35,12 @@ class Question(Model):
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
 
     answer_question = relationship('Answer', backref='answered_question', lazy='dynamic')
+    groups = relationship(
+        'QuestionGroup', secondary=QuestionGroupQuestion,
+        primaryjoin=(QuestionGroupQuestion.c.question_id == id),
+        backref=backref('group_questions', lazy='dynamic'),
+        lazy='dynamic'
+    )
 
 
 class Answer(Model):
@@ -34,6 +49,28 @@ class Answer(Model):
     answeredquestion = Column(Integer, ForeignKey('Question.id'), primary_key=True)
     answer = Column(String(256))
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
+
+
+class QuestionGroup(Model):
+    __tablename__ = 'QuestionGroup'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    group_type = Column(String)
+    description = Column(Text)
+    questions = relationship(
+        'Question', secondary=QuestionGroupQuestion,
+        primaryjoin=(QuestionGroupQuestion.c.question_group_id == id),
+        backref=backref('belongs_to_groups', lazy='dynamic'),
+        lazy='dynamic'
+    )
+
+    def add_question(self, question):
+        if self.group_type != "other" and question.questiontype != self.group_type:
+            raise RuntimeError(f"QuestionGroup of type {self.group_type} " +
+                f"cannot contain questions of type {question.questiontype}")
+        self.questions.append(question)
+        self.save()
 
 
 class Case(Model):
