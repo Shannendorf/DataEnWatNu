@@ -4,6 +4,39 @@ from wtforms import StringField, SubmitField, SelectField, IntegerField, Boolean
 from wtforms.validators import DataRequired, Email
 
 
+def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
+    class BaseForm(FlaskForm):
+        pass
+
+    question_ids = {}
+    for i, question in enumerate(question_group.questions.all()):
+        question_id = f"q{i}"
+        question_ids[question_id] = question
+
+        if question.questiontype == "likert":
+            setattr(BaseForm, question_id, RadioField(question.question,
+                choices=list(question.options)))
+        elif question.questiontype == "open":
+            setattr(BaseForm, question_id,
+                StringField(validators=[DataRequired()]))
+        elif question.questiontype == "integer":
+            setattr(BaseForm, question_id,
+                IntegerField(validators=[DataRequired()]))
+        elif question.questiontype == "bool":
+            setattr(BaseForm, question_id, BooleanField())
+        elif question.questiontype == "multiplechoice":
+            setattr(BaseForm, question_id, SelectField(question.question,
+                choices=list(question.options)))
+        else:
+            raise RuntimeError(f"Question type {question.questiontype} " +
+                "not supported")
+
+    if include_submit:
+        BaseForm.submit = SubmitField(submit_text)
+
+    return (BaseForm(), question_ids)
+
+
 # Form for open question
 class OpenQuestionForm(FlaskForm):
     answer = StringField(validators=[DataRequired()])
