@@ -1,18 +1,25 @@
-{% extends 'bootstrap/base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% if title %}{{ title }} - {% endif %}Data en wat nu?</title>
 
-{% block title %}
-  {% if title %}{{ title }} - {% endif %}Data en wat nu?
-{% endblock %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link href="/static/css/style.css" rel="stylesheet">
+  {% block app_styles %}{% endblock %}
 
-{% block navbar %}
+  {% block app_meta %}{% endblock %}
+</head>
+<body>
   {% include '_nav.html' %}
-{% endblock %}
 
-{% block content %}
   <div class="container">
     <div class="container" id="messages">{% include '_messages.html' %}</div>
     <div class="container" id="app-content">
       {% block app_content %}{% endblock %}
     </div>
   </div>
-{% endblock %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  {% block app_scripts %}{% endblock %}
+</body>
+</html>

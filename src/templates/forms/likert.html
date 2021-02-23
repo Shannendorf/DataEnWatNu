@@ -1,0 +1,27 @@
+<div class="d-none d-sm-none d-md-none d-lg-grid d-xl-grid d-xxl-grid">
+  <div class="row">
+    <div class="col-4"></div>
+    {% for option in getattr(form, list(question_fields.keys())[0]) %}
+      <div class="col" align="center">{{ option.label }}</div>
+    {% endfor %}
+  </div>
+  <hr>
+  {% for question in question_fields.keys() %}
+    <div class="row">
+      <div class="col-4">{{ getattr(form, question).label }}</div>
+      {% for option in getattr(form, question) %}
+        <div class="col" align="center">{{ option }}</div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+  <hr>
+</div>
+<div class="d-grid d-sm-grid d-md-grid d-lg-none d-xl-none d-xxl-none">
+  {% for question in question_fields.keys() %}
+    <p>
+      {{ getattr(form, question).label }}<br>
+      {{ getattr(form, question)() }}
+    </p>
+    <hr>
+  {% endfor %}
+</div>

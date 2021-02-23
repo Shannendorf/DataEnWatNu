@@ -1,12 +1,28 @@
 {% extends 'base.html' %}
-{% import 'bootstrap/wtf.html' as wtf %}
+
 
 {% block app_content %}
-<h1>{{ title }}</h1>
-{% if extra_text %}{{ extra_text }}{% endif %}
-<div class="row">
-  <div class="col-md-{% if col_size %}{{ col_size }}{% else %}4{% endif %}">
-    {{ wtf.quick_form(form) }}
-  </div>
+<div class="container" style="border-bottom: 1px solid lightgrey; margin-bottom: 25px; margin-top: 40px;">
+  <h4>{{ question_group.title }}</h4>
+  <p>{{ question_group.description }}</p>
 </div>
+
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+
+  <div class="container" id="question-form">
+    {% if question_group.group_type == "likert" %}
+      {% include 'forms/likert.html' %}
+    {% else %}
+      {% include 'forms/other.html' %}    
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <div class="container">
+    <p>{{ form.submit() }}</p>
+  </div>
+</form>
 {% endblock %}

@@ -18,12 +18,12 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
                 choices=list(question.options)))
         elif question.questiontype == "open":
             setattr(BaseForm, question_id,
-                StringField(validators=[DataRequired()]))
+                StringField(question.question, validators=[DataRequired()]))
         elif question.questiontype == "integer":
             setattr(BaseForm, question_id,
-                IntegerField(validators=[DataRequired()]))
+                IntegerField(question.question, validators=[DataRequired()]))
         elif question.questiontype == "bool":
-            setattr(BaseForm, question_id, BooleanField())
+            setattr(BaseForm, question_id, BooleanField(question.question))
         elif question.questiontype == "multiplechoice":
             setattr(BaseForm, question_id, SelectField(question.question,
                 choices=list(question.options)))

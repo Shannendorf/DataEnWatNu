@@ -1,0 +1,8 @@
+<div>
+  {% for question in question_fields.keys() %}
+  <div class="row">
+    <p><strong>{{ getattr(form, question).label }}</strong></p>
+    <p>{{ getattr(form, question)() }}</p>
+  </div>
+  {% endfor %}
+</div>

@@ -15,8 +15,10 @@ from src.blueprints.questions.email import mail
 
 
 def create_app(config_object: str = 'src.settings') -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path="/static")
     app.config.from_object(config_object)
+    app.jinja_env.globals.update(getattr=getattr)
+    app.jinja_env.globals.update(list=list)
 
     register_extensions(app)
     register_blueprints(app)
