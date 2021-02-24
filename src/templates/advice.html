@@ -13,9 +13,18 @@
   </div>
 </div>
 <br>
-<h2>Gestelde vragen en antwoorden</h2>
-{% for answer in answers %}
-<br><br>
-<b>{{ answer.answered_question.question }}</b> : {{ answer.answer }}
-{% endfor %}
+<div class="card">
+  <h2>Gestelde vragen en antwoorden</h2>
+  {% for group in groups_dict["groups"] %}
+    <hr>
+    <h4>{{ groups_dict[group]["group"].title }}</h4>
+    <p><em>{{ groups_dict[group]["group"].description }}</em></p>
+    {% for question in groups_dict[group]["questions"] %}
+    <p>
+      <strong>{{ question["question"].question }}: </strong>
+      {{ question["answer"].answer }}
+    </p>
+    {% endfor %}
+  {% endfor %}
+</div>
 {% endblock %}

@@ -75,18 +75,42 @@ def advice():
     session_id = request.cookies.get('sessionID')
     if not session_id:
         redirect(url_for('main.index'))
+    case = Case.query().filter_by(id=session_id).first()
+    if not case:
+        redirect(url_for('main.index'))
 
-    # Renders the endpage
-    answers = Answer.query().filter_by(case=session_id).all()
+    
+    # Collect the answers, questions, and groups
+    groups_dict = {"groups": []}
+    for answer in case.answer_case.all():
+        question = answer.answered_question
+        group = question.belongs_to_groups.first()
+        if f"group-{group.id}" in groups_dict["groups"]:
+            groups_dict[f"group-{group.id}"]["questions"].append({
+                "question": question,
+                "answer": answer
+            })
+        else:
+            groups_dict["groups"].append(f"group-{group.id}")
+            groups_dict[f"group-{group.id}"] = {
+                "group": group,
+                "questions": [{
+                    "question": question,
+                    "answer": answer
+                }]
+
+            }
+
     form = EmailForm()
     answers_list = []
-    for answer in answers:
+    for answer in case.answer_case.all():
         answers_list.append((answer.answered_question.question, answer.answer),)
     generate_report(answers_list, session_id)
     if form.validate_on_submit():
         email_address = [form.answer.data]
         send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], email_address, 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
-    return render_template('advice.html', extra_text="Dit is de eindpagina", title="Eindpagina", form=EmailForm(), answers=answers)
+    return render_template('advice.html', extra_text="Dit is de eindpagina", 
+        title="Eindpagina", form=EmailForm(), groups_dict=groups_dict)
 
 # Route for report download
 @bp.route('/report', methods=['GET'])

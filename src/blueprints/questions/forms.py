@@ -91,4 +91,4 @@ def get_form(formtype):
 
 class LoginForm(FlaskForm):
     code = StringField("Login code", validators=[DataRequired()])
-    submit = SubmitField("Login")
+    submit = SubmitField("Akkoord en verder")
