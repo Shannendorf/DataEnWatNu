@@ -1,7 +1,7 @@
 # Models
-
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
-    DateTime, Table
+    DateTime, Table, Boolean
 from sqlalchemy.orm import backref, relationship
 from secrets import token_urlsafe
 
@@ -87,3 +87,12 @@ class Case(Model):
         while cls.query().filter_by(id=c_id).with_entities(cls.id).count() != 0:
             c_id = token_urlsafe(128)
         return cls.create(id=c_id)
+
+
+class Code(Model):
+    __tablename__ = "Code"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String, index=True)
+    create_on = Column(DateTime, default=datetime.utcnow())
+    active = Column(Boolean)
