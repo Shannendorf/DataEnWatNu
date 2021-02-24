@@ -87,3 +87,8 @@ string_to_form = {
 
 def get_form(formtype):
     return string_to_form[formtype]()
+
+
+class LoginForm(FlaskForm):
+    code = StringField("Login code", validators=[DataRequired()])
+    submit = SubmitField("Login")

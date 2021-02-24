@@ -1,24 +1,30 @@
-from flask import render_template, redirect, url_for, request, make_response, send_file, current_app
+from flask import render_template, redirect, url_for, request, make_response, \
+    send_file, current_app, flash
 
 from src.blueprints.questions import bp
-from src.blueprints.questions.forms import EmailForm, QuestionnaireForm
+from src.blueprints.questions.forms import EmailForm, QuestionnaireForm, \
+    LoginForm
 from src.blueprints.questions.report_generator import generate_report
 from src.blueprints.questions.email import send_email
-from src.models import Question, QuestionType, Answer, Case, QuestionGroup
+from src.models import Question, QuestionType, Answer, Case, QuestionGroup, \
+    Code
 
 
 # Route for question startpage
 @bp.route('/questions/start', methods=['GET', 'POST'])
 def start():
-    case = Case.create_case()
-    session_id = case.id
-    url = url_for("questions.question", question_id=0)
-    html = f"<meta http-equiv='refresh' content='1; URL={url}'/>"
-
-    # Sets the cookie
-    resp = make_response(html)
-    resp.set_cookie('sessionID', session_id, max_age=10800)
-    return resp
+    form = LoginForm()
+    if form.validate_on_submit():
+        if Code.check_code(form.code.data):
+            case = Case.create_case()
+            session_id = case.id
+            resp = make_response(redirect(url_for(
+                "questions.question", question_id=0)))
+            resp.set_cookie("sessionID", session_id, max_age=10800)
+            return resp
+        flash("Code onjuist")
+        return redirect(url_for("questions.start"))
+    return render_template("login.html", form=form)
 
 
 # Route for the question page (both GET and POST)
@@ -26,7 +32,10 @@ def start():
 def question(question_id):
     session_id = request.cookies.get('sessionID')
     if not session_id:
-        return redirect(url_for('questions.start'))        
+        return redirect(url_for('questions.start'))
+    case = Case.query().filter_by(id=session_id).first()
+    if not case:
+        return redirect(url_for("questions.start"))
 
     # Retrieves correct question group or redirects to endpage
     question_group_order = [1, 2, 3]

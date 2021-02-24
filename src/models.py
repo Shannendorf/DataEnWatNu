@@ -96,3 +96,7 @@ class Code(Model):
     code = Column(String, index=True)
     create_on = Column(DateTime, default=datetime.utcnow())
     active = Column(Boolean)
+
+    @classmethod
+    def check_code(cls, code):
+        return bool(cls.query().filter_by(code=code).first())

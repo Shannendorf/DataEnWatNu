@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container">
+  <h4>Start vragenlijst - Login</h4>
+</div>
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+
+  <div class="container" id="login-form">
+    {{ form.code.label }}<br>
+    {{ form.code() }}<br><br>
+    {{ form.submit() }}
+  </div>
+</form>
+{% endblock %}
