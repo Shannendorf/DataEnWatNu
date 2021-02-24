@@ -7,7 +7,14 @@
 <br><br>
 <div class="row">
   <div class="col-md-{% if col_size %}{{ col_size }}{% else %}4{% endif %}">
-    {{ wtf.quick_form(form) }}
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <div id="email-report-form">
+        {{ form.answer.label }}<br>
+        {{ form.answer() }}<br><br>
+        {{ form.submit() }}
+      </div>
+    </form>
     <br>
     <a href="{{ url_for('questions.report') }}" target="_blank" role="button">Download report</a>
   </div>
