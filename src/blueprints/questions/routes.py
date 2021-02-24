@@ -29,7 +29,7 @@ def question(question_id):
         return redirect(url_for('questions.start'))        
 
     # Retrieves correct question group or redirects to endpage
-    question_group_order = [2, 3, 4]
+    question_group_order = [1, 2, 3]
     if len(question_group_order) > question_id:
         question_group = QuestionGroup.get_by_id(
             question_group_order[question_id])

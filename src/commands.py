@@ -20,6 +20,7 @@ def drop_db():
 def generate_testdata():
     QuestionType.create(name='open', form='OpenQuestionForm')
     QuestionType.create(name="multiplechoice", form="MCQuestionForm")
+    QuestionType.create(name="likert")
     
     qg1 = QuestionGroup.create(title="Group 1", description="This is the first group", group_type="other")
     q1 = Question.create(question="Wat is uw functie binnen het bedrijf/de organisatie waar u werkzaam bent?", questiontype="open")
@@ -31,4 +32,18 @@ def generate_testdata():
     qg1.add_question(q3)
     qg1.add_question(q4)
 
+    qg2 = QuestionGroup.create(title="Group 2", description="This is the second group (a likert group)", group_type="likert")
+    q2_1 = Question.create(question="First likert", questiontype="likert", options={"eens", "neutraal", "oneens"})
+    q2_2 = Question.create(question="Second likert", questiontype="likert", options={"eens", "neutraal", "oneens"})
+    q2_3 = Question.create(question="Third likert", questiontype="likert", options={"eens", "neutraal", "oneens"})
+    qg2.add_question(q2_1)
+    qg2.add_question(q2_2)
+    qg2.add_question(q2_3)
+
+    qg3 = QuestionGroup.create(title="Group 3", description="This is the third group", group_type="other")
+    q3_1 = Question.create(question="Question one", questiontype="open")
+    q3_2 = Question.create(question="Question two", questiontype="open")
+    qg3.add_question(q3_1)
+    qg3.add_question(q3_2)
+    
     db.session.commit()
