@@ -92,3 +92,8 @@ def get_form(formtype):
 class LoginForm(FlaskForm):
     code = StringField("Login code", validators=[DataRequired()])
     submit = SubmitField("Akkoord en verder")
+
+
+class IntroForm(FlaskForm):
+    selection = SelectField("Select one")
+    submit = SubmitField("Select")

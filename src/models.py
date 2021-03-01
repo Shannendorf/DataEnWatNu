@@ -91,15 +91,17 @@ class Case(Model):
 
     id = Column(String, primary_key=True)
     start = Column(DateTime)
+    code_used = Column(Integer, ForeignKey("Code.id"))
+    list_selected = Column(Integer, ForeignKey("QuestionList.id"))
 
     answer_case = relationship('Answer', backref='sessioncase', lazy='dynamic')
 
     @classmethod
-    def create_case(cls):
+    def create_case(cls, code_used):
         c_id = token_urlsafe(128)
         while cls.query().filter_by(id=c_id).with_entities(cls.id).count() != 0:
             c_id = token_urlsafe(128)
-        return cls.create(id=c_id)
+        return cls.create(id=c_id, code_used=code_used.id)
 
 
 class Code(Model):
@@ -110,9 +112,12 @@ class Code(Model):
     create_on = Column(DateTime, default=datetime.utcnow())
     active = Column(Boolean)
 
+    cases = relationship("Case", backref="case_code", lazy="dynamic")
+
     @classmethod
-    def check_code(cls, code):
-        return bool(cls.query().filter_by(code=code).first())
+    def get_code(cls, code):
+        return cls.query().filter_by(code=code).first()
+        
 
 
 class QuestionList(Model):
@@ -120,6 +125,8 @@ class QuestionList(Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, index=True, unique=True)
+    
+    cases = relationship("Case", backref="case_list", lazy="dynamic")
 
     groups = relationship(
         "QuestionGroup", secondary=QuestionListQuestionGroup,
