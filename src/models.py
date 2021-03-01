@@ -1,5 +1,6 @@
 # Models
 from datetime import datetime
+from typing import Type
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
     DateTime, Table, Boolean
 from sqlalchemy.orm import backref, relation, relationship
@@ -125,5 +126,19 @@ class QuestionList(Model):
         primaryjoin=(QuestionListQuestionGroup.c.question_list_id == id),
         backref=backref("group_lists", lazy="dynamic"), lazy="dynamic")
 
-        
+    def add_group(self, group):
+        if type(group) == int:
+            group = QuestionGroup.get_by_id(group)
+        if not group:
+            raise RuntimeError("QuestionGroup not found")
+        if type(group) != QuestionGroup:
+            raise TypeError(
+                f"Expected QuestionGroup object, got {type(group)}")
+        if group not in self.groups.all():
+            self.groups.append(group)
+            self.save()
+
+    def add_groups(self, groups):
+        for group in groups:
+            self.add_group(group)
 

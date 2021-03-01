@@ -3,7 +3,7 @@ from secrets import token_urlsafe
 
 from src.app import create_app
 from src.database import db
-from src.models import QuestionType, Question, QuestionGroup, Code
+from src.models import QuestionList, QuestionType, Question, QuestionGroup, Code
 
 cli = FlaskGroup(create_app=create_app)
 app = create_app()
@@ -45,6 +45,12 @@ def generate_testdata():
     q3_2 = Question.create(question="Question two", questiontype="open")
     qg3.add_question(q3_1)
     qg3.add_question(q3_2)
+
+    ql1 = QuestionList.create(name="Question List 1")
+    ql1.add_groups([qg1, qg2, qg3])
+
+    ql2 = QuestionList.create(name="Question List 2")
+    ql2.add_groups([qg1, qg3])
 
     code = Code.create(code="aabb", active=True)
 
