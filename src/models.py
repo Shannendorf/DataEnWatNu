@@ -2,7 +2,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
     DateTime, Table, Boolean
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import backref, relation, relationship
 from secrets import token_urlsafe
 
 from src.database import Model
@@ -15,6 +15,13 @@ QuestionGroupQuestion = Table(
     Column('question_id', Integer, ForeignKey('Question.id'))
 )
 
+QuestionListQuestionGroup = Table(
+    "QuestionListQuestionGroup",
+    Model.metadata,
+    Column("question_list_id", Integer, ForeignKey("QuestionList.id")),
+    Column("question_group_id", Integer, ForeignKey("QuestionGroup.id"))
+)
+
 
 class QuestionType(Model):
     __tablename__ = 'QuestionType'
@@ -23,7 +30,8 @@ class QuestionType(Model):
     function = Column(String(128))
     form = Column(String(128))
 
-    type_question = relationship('Question', backref='question_type', lazy='dynamic')
+    type_question = relationship('Question', backref='question_type',
+        lazy='dynamic')
 
 
 class Question(Model):
@@ -34,19 +42,19 @@ class Question(Model):
     options = Column(ARRAY(String))
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
 
-    answer_question = relationship('Answer', backref='answered_question', lazy='dynamic')
+    answer_question = relationship('Answer', backref='answered_question',
+        lazy='dynamic')
     groups = relationship(
         'QuestionGroup', secondary=QuestionGroupQuestion,
         primaryjoin=(QuestionGroupQuestion.c.question_id == id),
-        backref=backref('group_questions', lazy='dynamic'),
-        lazy='dynamic'
-    )
+        backref=backref('group_questions', lazy='dynamic'), lazy='dynamic')
 
 
 class Answer(Model):
     __tablename__ = 'Answer'
 
-    answeredquestion = Column(Integer, ForeignKey('Question.id'), primary_key=True)
+    answeredquestion = Column(Integer, ForeignKey('Question.id'),
+        primary_key=True)
     answer = Column(String(256))
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
 
@@ -58,12 +66,16 @@ class QuestionGroup(Model):
     title = Column(String)
     group_type = Column(String)
     description = Column(Text)
+
     questions = relationship(
         'Question', secondary=QuestionGroupQuestion,
         primaryjoin=(QuestionGroupQuestion.c.question_group_id == id),
         backref=backref('belongs_to_groups', lazy='dynamic'),
-        lazy='dynamic'
-    )
+        lazy='dynamic')
+    lists = relationship(
+        "QuestionList", secondary=QuestionListQuestionGroup,
+        primaryjoin=(QuestionListQuestionGroup.c.question_group_id == id),
+        backref=backref("list_groups", lazy="dynamic"), lazy="dynamic")
 
     def add_question(self, question):
         if self.group_type != "other" and question.questiontype != self.group_type:
@@ -100,3 +112,18 @@ class Code(Model):
     @classmethod
     def check_code(cls, code):
         return bool(cls.query().filter_by(code=code).first())
+
+
+class QuestionList(Model):
+    __tablename__ = "QuestionList"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, index=True, unique=True)
+
+    groups = relationship(
+        "QuestionGroup", secondary=QuestionListQuestionGroup,
+        primaryjoin=(QuestionListQuestionGroup.c.question_list_id == id),
+        backref=backref("group_lists", lazy="dynamic"), lazy="dynamic")
+
+        
+

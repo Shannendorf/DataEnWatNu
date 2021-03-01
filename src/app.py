@@ -6,11 +6,11 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 
 from flask.wrappers import Request
 
+from src import models
 from src.blueprints import main, questions
 from src.errors import bp as errors_bp
 from src.extensions import bootstrap, db, migrate
 from src.utils import RequestFormatter
-from src.models import QuestionType
 from src.blueprints.questions.email import mail
 
 
@@ -45,6 +45,13 @@ def register_shellcontext(app):
     def shell_context():
         return {
             'db': db,
+            "QuestionType": models.QuestionType,
+            "Question": models.Question,
+            "Answer": models.Answer,
+            "QuestionGroup": models.QuestionGroup,
+            "Case": models.Case,
+            "Code": models.Code,
+            "QuestionList": models.QuestionList
         }
     app.shell_context_processor(shell_context)
 

@@ -7,7 +7,7 @@ from src.blueprints.questions.forms import EmailForm, QuestionnaireForm, \
 from src.blueprints.questions.report_generator import generate_report
 from src.blueprints.questions.email import send_email
 from src.models import Question, QuestionType, Answer, Case, QuestionGroup, \
-    Code
+    Code, QuestionList
 
 
 # Route for question startpage
@@ -38,12 +38,10 @@ def question(question_id):
         return redirect(url_for("questions.start"))
 
     # Retrieves correct question group or redirects to endpage
-    question_group_order = [1, 2, 3]
-    if len(question_group_order) > question_id:
-        question_group = QuestionGroup.get_by_id(
-            question_group_order[question_id])
-    else:
-        return redirect(url_for('questions.advice'))
+    question_group_order = QuestionList.get_by_id(1).groups.all()
+    if len(question_group_order) <= question_id:
+        return redirect(url_for("questions.advice"))
+    question_group = question_group_order[question_id]
 
     # Determines which form is appropriate and includes necessary information               
     form, question_fields = QuestionnaireForm(question_group,
