@@ -3,12 +3,13 @@ from flask import render_template, redirect, url_for, request, make_response, \
 from sqlalchemy.sql.expression import select
 
 from src.blueprints.questions import bp
-from src.blueprints.questions.forms import EmailForm, IntroForm, QuestionnaireForm, \
-    LoginForm
+from src.blueprints.questions.forms import EmailForm, IntroForm, \
+    QuestionnaireForm, LoginForm
 from src.blueprints.questions.report_generator import generate_report
 from src.blueprints.questions.email import send_email
 from src.models import Question, QuestionType, Answer, Case, QuestionGroup, \
     Code, QuestionList
+from src.utils import check_case
 
 
 # Route for question startpage
@@ -31,13 +32,7 @@ def start():
 # Route for selecting the question list
 @bp.route("/questions/intro", methods=["GET", "POST"])
 def intro():
-    session_id = request.cookies.get("sessionID")
-    if not session_id:
-        return redirect(url_for("questions.start"))
-    case = Case.query().filter_by(id=session_id).first()
-    if not case:
-        return redirect(url_for("questions.start"))
-    
+    case = check_case()
     form = IntroForm()
     form.selection.choices = [(l.id, l.name) for l in QuestionList\
         .query().all()]
@@ -51,12 +46,7 @@ def intro():
 # Route for the question page (both GET and POST)
 @bp.route('/questionlist/<int:question_id>', methods=['GET', 'POST'])
 def question(question_id):
-    session_id = request.cookies.get('sessionID')
-    if not session_id:
-        return redirect(url_for('questions.start'))
-    case = Case.query().filter_by(id=session_id).first()
-    if not case:
-        return redirect(url_for("questions.start"))
+    case = check_case()
 
     # Retrieves correct question group or redirects to endpage
     question_group_order = QuestionList.get_by_id(1).groups.all()
@@ -74,12 +64,12 @@ def question(question_id):
         for question_label, question_obj in question_fields.items():
             answer_data = getattr(form, question_label).data
             existing_answer = Answer.query()\
-                .filter_by(case=session_id, answeredquestion=question_obj.id)\
+                .filter_by(case=case.id, answeredquestion=question_obj.id)\
                 .first()
             if existing_answer:
                 existing_answer.update(answer=answer_data)
             else:
-                Answer.create(answer=answer_data, case=session_id,
+                Answer.create(answer=answer_data, case=case.id,
                     answeredquestion=question_obj.id)
         return redirect(url_for("questions.question",
             question_id=question_id+1))
@@ -90,15 +80,7 @@ def question(question_id):
 # Route for advice page
 @bp.route('/advice', methods=['GET', 'POST'])
 def advice():
-    # Checks whether there is a session_id, otherwise the user gets redirected
-    # to the startpage
-    session_id = request.cookies.get('sessionID')
-    if not session_id:
-        redirect(url_for('main.index'))
-    case = Case.query().filter_by(id=session_id).first()
-    if not case:
-        redirect(url_for('main.index'))
-
+    case = check_case()
     
     # Collect the answers, questions, and groups
     groups_dict = {"groups": []}
