@@ -41,6 +41,7 @@ class Question(Model):
     id = Column(Integer, primary_key=True)
     question = Column(Text)
     options = Column(ARRAY(String))
+    weight = Column(Integer)
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
 
     answer_question = relationship('Answer', backref='answered_question',
@@ -67,6 +68,7 @@ class QuestionGroup(Model):
     title = Column(String)
     group_type = Column(String)
     description = Column(Text)
+    weight = Column(Integer)
 
     questions = relationship(
         'Question', secondary=QuestionGroupQuestion,
