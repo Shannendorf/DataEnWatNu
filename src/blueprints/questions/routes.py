@@ -50,7 +50,8 @@ def question(question_id):
 
     # Retrieves correct question group or redirects to endpage
     question_group_order = QuestionList.get_by_id(1).groups.all()
-    question_group_order = case.case_list.groups.all()
+    question_group_order = case.case_list.groups\
+        .order_by(QuestionGroup.weight).all()
     if len(question_group_order) <= question_id:
         return redirect(url_for("questions.advice"))
     question_group = question_group_order[question_id]

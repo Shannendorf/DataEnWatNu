@@ -1,7 +1,10 @@
 # Forms for the questions module
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, IntegerField, BooleanField, RadioField
+from wtforms import StringField, SubmitField, SelectField, IntegerField,\
+    BooleanField, RadioField
 from wtforms.validators import DataRequired, Email
+
+from src.models import Question
 
 
 def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
@@ -9,7 +12,8 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
         pass
 
     question_ids = {}
-    for i, question in enumerate(question_group.questions.all()):
+    for i, question in enumerate(question_group.questions\
+            .order_by(Question.weight).all()):
         question_id = f"q{i}"
         question_ids[question_id] = question
 
