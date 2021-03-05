@@ -61,6 +61,15 @@ class Answer(Model):
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
 
 
+class LikertOption(Model):
+    __tablename__ = "LikertOption"
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
+    weight = Column(Integer)
+    group_id = Column(Integer, ForeignKey("QuestionGroup.id"))
+
+
 class QuestionGroup(Model):
     __tablename__ = 'QuestionGroup'
 
@@ -69,6 +78,9 @@ class QuestionGroup(Model):
     group_type = Column(String)
     description = Column(Text)
     weight = Column(Integer)
+
+    likert_options = relationship("LikertOption", backref="likrt_group",
+        lazy="dynamic")
 
     questions = relationship(
         'Question', secondary=QuestionGroupQuestion,
@@ -85,6 +97,13 @@ class QuestionGroup(Model):
             raise RuntimeError(f"QuestionGroup of type {self.group_type} " +
                 f"cannot contain questions of type {question.questiontype}")
         self.questions.append(question)
+        self.save()
+
+    def add_likert_option(self, option):
+        if self.group_type != "likert":
+            raise RuntimeError("Cannot add likert option to group with " +
+                f"type {self.group_type}")
+        self.likert_options.append(option)
         self.save()
 
 

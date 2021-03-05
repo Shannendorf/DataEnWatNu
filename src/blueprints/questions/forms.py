@@ -4,7 +4,7 @@ from wtforms import StringField, SubmitField, SelectField, IntegerField,\
     BooleanField, RadioField
 from wtforms.validators import DataRequired, Email
 
-from src.models import Question
+from src.models import LikertOption, Question
 
 
 def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
@@ -12,6 +12,8 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
         pass
 
     question_ids = {}
+    likert_options = question_group.likert_options\
+        .order_by(LikertOption.weight).all()
     for i, question in enumerate(question_group.questions\
             .order_by(Question.weight).all()):
         question_id = f"q{i}"
@@ -19,7 +21,7 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
 
         if question.questiontype == "likert":
             setattr(BaseForm, question_id, RadioField(question.question,
-                choices=list(question.options)))
+                choices=[o.text for o in likert_options]))
         elif question.questiontype == "open":
             setattr(BaseForm, question_id,
                 StringField(question.question, validators=[DataRequired()]))

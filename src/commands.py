@@ -3,7 +3,7 @@ from secrets import token_urlsafe
 
 from src.app import create_app
 from src.database import db
-from src.models import QuestionList, QuestionType, Question, QuestionGroup, Code
+from src.models import LikertOption, QuestionList, QuestionType, Question, QuestionGroup, Code
 
 cli = FlaskGroup(create_app=create_app)
 app = create_app()
@@ -33,6 +33,16 @@ def generate_testdata():
     qg1.add_question(q4)
 
     qg2 = QuestionGroup.create(title="Group 2", description="This is the second group (a likert group)", group_type="likert", weight=40)
+    lo1 = LikertOption.create(text="Helemaal Oneens", weight=1)
+    lo2 = LikertOption.create(text="Oneens", weight=2)
+    lo3 = LikertOption.create(text="Neutraa", weight=3)
+    lo4 = LikertOption.create(text="Eens", weight=4)
+    lo5 = LikertOption.create(text="Helemaal Eens", weight=5)
+    qg2.add_likert_option(lo1)
+    qg2.add_likert_option(lo2)
+    qg2.add_likert_option(lo3)
+    qg2.add_likert_option(lo4)
+    qg2.add_likert_option(lo5)
     q2_1 = Question.create(question="First likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=10)
     q2_2 = Question.create(question="Second likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=5)
     q2_3 = Question.create(question="Third likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=20)
