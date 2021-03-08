@@ -87,7 +87,7 @@ def advice():
     groups_dict = {"groups": []}
     for answer in case.answer_case.all():
         question = answer.answered_question
-        group = question.belongs_to_groups.first()
+        group = answer.answer_group 
         if f"group-{group.id}" in groups_dict["groups"]:
             groups_dict[f"group-{group.id}"]["questions"].append({
                 "question": question,
@@ -103,6 +103,11 @@ def advice():
                 }]
 
             }
+    # Calculate score for each group
+    for group in groups_dict:
+        if group != "groups":
+            groups_dict[group]["score"] = groups_dict[group]["group"]\
+                .calculate_score_for_case(case)
 
     form = EmailForm()
     answers_list = []

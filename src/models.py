@@ -119,6 +119,20 @@ class QuestionGroup(Model):
         self.likert_options.append(option)
         self.save()
 
+    def calculate_score_for_case(self, case):
+        if self.group_type != "likert":
+            return 0
+        total = 0
+        count = 0
+        for question in self.questions.all():
+            answer = Answer.query().filter(and_(
+                Answer.answeredquestion == question.id,
+                Answer.case == case.id
+            )).first()
+            total += int(answer.answer)
+            count += 1
+        return total / count
+
 
 class Case(Model):
     __tablename__ = 'Case'
@@ -182,4 +196,3 @@ class QuestionList(Model):
     def add_groups(self, groups):
         for group in groups:
             self.add_group(group)
-

@@ -25,6 +25,9 @@
   {% for group in groups_dict["groups"] %}
     <hr>
     <h4>{{ groups_dict[group]["group"].title }}</h4>
+    {% if groups_dict[group]["group"].group_type == "likert" %}
+    <p><strong>Score: </strong> {{ groups_dict[group]["score"] }}</p>
+    {% endif %}
     <p><em>{{ groups_dict[group]["group"].description }}</em></p>
     {% for question in groups_dict[group]["questions"] %}
     <p>
