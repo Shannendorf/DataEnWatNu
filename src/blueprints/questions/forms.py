@@ -21,7 +21,7 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
 
         if question.questiontype == "likert":
             setattr(BaseForm, question_id, RadioField(question.question,
-                choices=[o.text for o in likert_options]))
+                choices=[(o.value, o.text) for o in likert_options]))
         elif question.questiontype == "open":
             setattr(BaseForm, question_id,
                 StringField(question.question, validators=[DataRequired()]))

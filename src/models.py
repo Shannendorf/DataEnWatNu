@@ -67,6 +67,7 @@ class LikertOption(Model):
 
     id = Column(Integer, primary_key=True)
     text = Column(String)
+    value = Column(Integer)
     weight = Column(Integer)
     group_id = Column(Integer, ForeignKey("QuestionGroup.id"))
 
