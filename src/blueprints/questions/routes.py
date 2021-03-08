@@ -71,7 +71,7 @@ def question(question_id):
                 existing_answer.update(answer=answer_data)
             else:
                 Answer.create(answer=answer_data, case=case.id,
-                    answeredquestion=question_obj.id)
+                    answeredquestion=question_obj.id, group=question_group.id)
         return redirect(url_for("questions.question",
             question_id=question_id+1))
     return render_template('form.html', form=form,

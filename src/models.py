@@ -59,6 +59,7 @@ class Answer(Model):
         primary_key=True)
     answer = Column(String(256))
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
+    group = Column(Integer, ForeignKey("QuestionGroup.id"))
 
 
 class LikertOption(Model):
@@ -79,8 +80,9 @@ class QuestionGroup(Model):
     description = Column(Text)
     weight = Column(Integer)
 
-    likert_options = relationship("LikertOption", backref="likrt_group",
+    likert_options = relationship("LikertOption", backref="likert_group",
         lazy="dynamic")
+    answers = relationship("Answer", backref="answer_group", lazy="dynamic")
 
     questions = relationship(
         'Question', secondary=QuestionGroupQuestion,

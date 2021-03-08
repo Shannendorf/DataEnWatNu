@@ -1,5 +1,6 @@
 from flask.cli import FlaskGroup
 from secrets import token_urlsafe
+from sqlalchemy import MetaData
 
 from src.app import create_app
 from src.database import db
@@ -11,6 +12,10 @@ app = create_app()
 
 @cli.command()
 def drop_db():
+    if db.engine.has_table("alembic_version"):
+        metadata = MetaData(db.engine, reflect=True)
+        table = metadata.tables.get("alembic_version")
+        table.drop()
     db.drop_all()
     db.session.commit()
 
