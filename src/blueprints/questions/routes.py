@@ -107,7 +107,8 @@ def advice():
     form = EmailForm()
     answers_list = []
     for answer in case.answer_case.all():
-        answers_list.append((answer.answered_question.question, answer.answer),)
+        answers_list.append((answer.answered_question.question,
+            answer.format_answer()),)
     generate_report(answers_list, case.id)
     if form.validate_on_submit():
         email_address = [form.answer.data]

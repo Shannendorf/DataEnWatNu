@@ -29,7 +29,7 @@
     {% for question in groups_dict[group]["questions"] %}
     <p>
       <strong>{{ question["question"].question }}: </strong>
-      {{ question["answer"].answer }}
+      {{ question["answer"].format_answer() }}
     </p>
     {% endfor %}
   {% endfor %}

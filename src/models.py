@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Type
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
-    DateTime, Table, Boolean
+    DateTime, Table, Boolean, and_
 from sqlalchemy.orm import backref, relation, relationship
 from secrets import token_urlsafe
 
@@ -60,6 +60,16 @@ class Answer(Model):
     answer = Column(String(256))
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
     group = Column(Integer, ForeignKey("QuestionGroup.id"))
+
+    def format_answer(self):
+        if self.answer_group.group_type == "likert":
+            option = LikertOption.query()\
+                .filter(and_(
+                    LikertOption.group_id == self.group,
+                    LikertOption.value == int(self.answer)))\
+                .first()
+            return f"{option.text} ({option.value})"
+        return self.answer
 
 
 class LikertOption(Model):
