@@ -4,7 +4,8 @@ from sqlalchemy import MetaData
 
 from src.app import create_app
 from src.database import db
-from src.models import LikertOption, QuestionList, QuestionType, Question, QuestionGroup, Code
+from src.models import LikertOption, QuestionList, QuestionType, Question, \
+    QuestionGroup, Code, ScoreText
 
 cli = FlaskGroup(create_app=create_app)
 app = create_app()
@@ -54,6 +55,12 @@ def generate_testdata():
     qg2.add_question(q2_1)
     qg2.add_question(q2_2)
     qg2.add_question(q2_3)
+    st1 = ScoreText.create(text="Low score", lower_limit=0, upper_limit=1.5, weight=10, group=qg2.id)
+    st2 = ScoreText.create(text="Medium score", lower_limit=1.51, upper_limit=3, weight=20, group=qg2.id)
+    st3 = ScoreText.create(text="High score", lower_limit=3.001, upper_limit=6, weight=30, group=qg2.id)
+    st4 = ScoreText.create(text="Overlapping text", lower_limit=0, upper_limit=6, weight=5, group=qg2.id)
+    st5 = ScoreText.create(lower_limit=0, upper_limit=6, weight=100, group=qg2.id, text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris volutpat nec arcu sit amet venenatis. Sed sagittis tortor ut risus consequat feugiat. Pellentesque vestibulum nibh non leo ultrices tristique. Donec porttitor at nisl ut sagittis. In a volutpat libero. Nullam vel orci euismod enim dignissim lacinia sed nec mi. Curabitur sodales lobortis leo quis fermentum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean rutrum sodales ultrices. Nunc lobortis ultrices commodo. Morbi iaculis metus vel elit malesuada, ullamcorper malesuada metus viverra. Nunc nec ex varius, varius eros eget, aliquet purus. ")
+
 
     qg3 = QuestionGroup.create(title="Group 3", description="This is the third group", group_type="other", weight=60)
     q3_1 = Question.create(question="Question one", questiontype="open", weight=10)

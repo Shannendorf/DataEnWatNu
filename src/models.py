@@ -2,8 +2,8 @@
 from datetime import datetime
 from typing import Type
 from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
-    DateTime, Table, Boolean, and_
-from sqlalchemy.orm import backref, relation, relationship
+    DateTime, Table, Boolean, and_, Float
+from sqlalchemy.orm import backref, relationship
 from secrets import token_urlsafe
 
 from src.database import Model
@@ -94,6 +94,7 @@ class QuestionGroup(Model):
     likert_options = relationship("LikertOption", backref="likert_group",
         lazy="dynamic")
     answers = relationship("Answer", backref="answer_group", lazy="dynamic")
+    texts = relationship("ScoreText", backref="text_group", lazy="dynamic")
 
     questions = relationship(
         'Question', secondary=QuestionGroupQuestion,
@@ -133,6 +134,10 @@ class QuestionGroup(Model):
             count += 1
         return total / count
 
+    def get_texts(self, score):
+        return self.texts.filter(and_(ScoreText.lower_limit<=score,
+            ScoreText.upper_limit>=score)).order_by(ScoreText.weight).all()
+        
 
 class Case(Model):
     __tablename__ = 'Case'
@@ -196,3 +201,14 @@ class QuestionList(Model):
     def add_groups(self, groups):
         for group in groups:
             self.add_group(group)
+
+
+class ScoreText(Model):
+    __tablename__ = "ScoreText"
+
+    id = Column(Integer, primary_key=True)
+    text = Column(Text)
+    lower_limit = Column(Float)
+    upper_limit = Column(Float)
+    weight = Column(Integer)
+    group = Column(Integer, ForeignKey("QuestionGroup.id"))
