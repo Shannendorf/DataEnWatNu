@@ -20,6 +20,19 @@
   </div>
 </div>
 <br>
+<div>
+  <h2>Advies</h2>
+  {% for group in groups_dict["groups"] %}
+    {% if groups_dict[group]["group"].group_type == "likert" %}
+      <hr>
+      <h4>{{ groups_dict[group]["group"].title }}</h4>
+      {% for text in groups_dict[group]["group"].get_texts(groups_dict[group]["score"]) %}
+        <p>{{ text.text }}</p>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</div>
+<br><br>
 <div class="card">
   <h2>Gestelde vragen en antwoorden</h2>
   {% for group in groups_dict["groups"] %}
