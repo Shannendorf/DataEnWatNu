@@ -42,6 +42,7 @@ class Question(Model):
     question = Column(Text)
     options = Column(ARRAY(String))
     weight = Column(Integer)
+    reversed_score = Column(Boolean, default=False)
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
 
     answer_question = relationship('Answer', backref='answered_question',
@@ -123,6 +124,9 @@ class QuestionGroup(Model):
     def calculate_score_for_case(self, case):
         if self.group_type != "likert":
             return 0
+        options = self.likert_options.order_by(LikertOption.weight).all()
+        values = [o.value for o in options]
+
         total = 0
         count = 0
         for question in self.questions.all():
@@ -130,9 +134,13 @@ class QuestionGroup(Model):
                 Answer.answeredquestion == question.id,
                 Answer.case == case.id
             )).first()
-            total += int(answer.answer)
+            value = int(answer.answer)
+            if answer.answered_question.reversed_score:
+                index = values.index(value)
+                value = values[-index-1]
+            total += value
             count += 1
-        return total / count
+        return total
 
     def get_texts(self, score):
         return self.texts.filter(and_(ScoreText.lower_limit<=score,

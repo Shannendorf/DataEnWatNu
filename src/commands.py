@@ -51,7 +51,7 @@ def generate_testdata():
     qg2.add_likert_option(lo5)
     q2_1 = Question.create(question="First likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=10)
     q2_2 = Question.create(question="Second likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=5)
-    q2_3 = Question.create(question="Third likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=20)
+    q2_3 = Question.create(question="Third likert", questiontype="likert", options={"eens", "neutraal", "oneens"}, weight=20, reversed_score=True)
     qg2.add_question(q2_1)
     qg2.add_question(q2_2)
     qg2.add_question(q2_3)
