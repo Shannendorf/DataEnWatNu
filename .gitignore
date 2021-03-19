@@ -3,6 +3,7 @@
 *.log.*
 src/output/pdf/*.pdf
 src/output/tex/*.tex
+src/static/images/*.png
 
 
 

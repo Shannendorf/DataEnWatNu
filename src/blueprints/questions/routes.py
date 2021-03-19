@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import select
 from src.blueprints.questions import bp
 from src.blueprints.questions.forms import EmailForm, IntroForm, \
     QuestionnaireForm, LoginForm
-from src.blueprints.questions.report_generator import generate_report
+from src.blueprints.questions.report_generator import generate_report, generate_radarchart
 from src.blueprints.questions.email import send_email
 from src.models import Question, QuestionType, Answer, Case, QuestionGroup, \
     Code, QuestionList
@@ -101,7 +101,6 @@ def advice():
                     "question": question,
                     "answer": answer
                 }]
-
             }
     # Calculate score for each group
     for group in groups_dict:
@@ -109,17 +108,23 @@ def advice():
             groups_dict[group]["score"] = groups_dict[group]["group"]\
                 .calculate_score_for_case(case)
 
-    form = EmailForm()
+    # Generates radar chart PNG
+    generate_radarchart([18, 14, 1, 20, 20], case.id)
+
+    # Generates report
     answers_list = []
     for answer in case.answer_case.all():
         answers_list.append((answer.answered_question.question,
             answer.format_answer()),)
     generate_report(answers_list, case.id)
+    
+    # Sends e-mail with report if e-mail address is entered
+    form = EmailForm()
     if form.validate_on_submit():
         email_address = [form.answer.data]
         send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], email_address, 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
     return render_template('advice.html', extra_text="Dit is de eindpagina", 
-        title="Eindpagina", form=EmailForm(), groups_dict=groups_dict)
+        title="Eindpagina", form=EmailForm(), groups_dict=groups_dict, case_id=case.id)
 
 # Route for report download
 @bp.route('/report', methods=['GET'])
