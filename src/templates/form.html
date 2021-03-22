@@ -4,7 +4,7 @@
 {% block app_content %}
 <div class="container" style="border-bottom: 1px solid lightgrey; margin-bottom: 25px; margin-top: 40px;">
   <h4>{{ question_group.title }}</h4>
-  <p>{{ question_group.description }}</p>
+  {% if question_group.description %}<p>{{ question_group.description }}</p>{% endif %}
 </div>
 
 
