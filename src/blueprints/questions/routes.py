@@ -109,7 +109,7 @@ def advice():
                 .calculate_score_for_case(case)
 
     # Generates radar chart PNG
-    generate_radarchart([18, 14, 1, 20, 20], case.id)
+    generate_radarchart(groups_dict, [18, 14, 1, 20, 20], case.id)
 
     # Generates report
     answers_list = []

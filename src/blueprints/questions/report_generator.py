@@ -7,40 +7,27 @@ from jinja2 import Template
 from pdflatex import PDFLaTeX
 
 
-def generate_radarchart(scores, session_id):
-    # first param is a list containing the scores 
-    # second param is the session_id (to name the image)
-    df = pd.DataFrame({
-    'group': ["Gevoel van urgentie", "Data op strategisch niveau", "Skillset medewerkers", "Staat van digitalisering", "Bereidheid tot verandering"],
-    "Gevoel\n van\n urgentie": [scores[0], scores[0], scores[0], scores[0], scores[0]],
-    "Data op\n strategisch niveau": [scores[1], scores[1], scores[1], scores[1], scores[1]],
-    "Skillset\n mede-\n werkers\n\n": [scores[2], scores[2], scores[2], scores[2], scores[2]],
-    "Staat\n van\n digitalisering": [scores[3], scores[3], scores[3], scores[3], scores[3]],
-    "Bereidheid\n tot verandering": [scores[4], scores[4], scores[4], scores[4], scores[4]]
-    })
-    
-    categories=list(df)[1:]
-    N = len(categories)
-    
-    values=df.loc[0].drop('group').values.flatten().tolist()
-    values += values[:1]
-    
-    angles = [n / float(N) * 2 * pi for n in range(N)]
-    angles += angles[:1]
-    
-    ax = plt.subplot(111, polar=True)   
-    plt.xticks(angles[:-1], categories, color='#6f7274', size=6)
-    ax.set_rlabel_position(0)
-    plt.yticks([5,10,15,20], ["5","10","15","20"], color="grey", size=7)
-    plt.ylim(0,25)
+def generate_radarchart(groups_dict, scores, session_id):
+    import subprocess
 
-    ax.plot(angles, values, linewidth=1, linestyle='solid')
-    ax.fill(angles, values, 'b', alpha=0.1)
+    data = {"labels": [], "data": {}}
+    for group in groups_dict["groups"]:
+        current_group = groups_dict[group]
+        title = current_group["group"].title
+        data["labels"].append(title)
+        data["data"][title] = current_group["score"]
 
-    # Saving the chart as a PNG
     if not os.path.exists("src/static/images"):
         os.mkdir("src/static/images")
-    plt.savefig("src/static/images/"+session_id+".png") 
+    output_path = f"src/static/images/{session_id}.png"
+
+    data_str = str(data).replace("'", '"')
+    subprocess.call([
+        "tools/generate_radar_plot.py",
+        "--data", data_str,
+        "--output", output_path
+    ])
+
 
 def generate_report(answers_list, session_id):
     latex_jinja_env = jinja2.Environment(
