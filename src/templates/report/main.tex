@@ -1,0 +1,140 @@
+\documentclass[whitelogo,openany]{tudelft-report}
+
+%% Dependencies
+% Appendices
+\usepackage[toc,page]{appendix}
+\renewcommand{\appendixtocname}{Bijlagen}
+\renewcommand{\appendixpagename}{Bijlagen}
+
+% Flexible bibliography
+\usepackage{natbib}
+
+% voor gebruik van Markdown
+%\markdownInput{example.md}
+\usepackage[hybrid]{markdown}
+
+\usepackage[dutch]{babel}
+
+% Hernoem "Contents" naar "Inhoud"
+\AtBeginDocument{\renewcommand*\contentsname{Inhoud}}
+
+% ToDo notes
+\usepackage{todonotes}
+% Enumeration
+\usepackage{nth}
+% Fancy tables
+\usepackage{tabularx}
+\usepackage{booktabs}
+% Floats
+\usepackage{float}
+% Numbers
+\usepackage{numprint}
+\npthousandsep{\,}
+% Inline lists
+\usepackage[inline]{enumitem}
+% Subfigures
+\usepackage{subcaption}
+% Correct single quotes
+\usepackage{textcomp}
+% Colored boxes
+\usepackage{tcolorbox}
+\usepackage{float}
+% Custom list spacing
+\usepackage{enumitem}
+
+%% Setup
+
+\newcommand{\detailtexcount}[1]{%
+  \immediate\write18{texcount -merge -sum -q #1.tex output.bbl > #1.wcdetail }%
+  \verbatiminput{#1.wcdetail}%
+}
+
+\newcommand{\quickwordcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -q #1.tex output.bbl > #1-words.sum }%
+  \input{#1-words.sum} words%
+}
+ 
+\newcommand{\quickcharcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -char -q #1.tex output.bbl > #1-chars.sum }%
+  \input{#1-chars.sum} characters (not including spaces)%
+}
+
+% Base path for all figures
+\graphicspath{ {figures/} }
+
+%%% FILL THIS IN %%%
+
+% Your title here
+\newcommand{\titel}{Data en wat nu?}
+
+% Your subtitle here
+\newcommand{\subtitel}{Rapport}
+
+% Your course or project here
+\newcommand{\module}{BEDRIJFSNAAM}
+
+% Your date here
+\newcommand{\datum}{01-01-2020}
+
+% Your affiliation here
+\newcommand{\organization}{lectoraat Data Intelligence}
+
+% Your names here
+\newcommand{\studentNames}{}
+
+% Your supervisors here, don't forget title/grade and function
+% \newcommand{\supervisorNames}{}
+
+% Your cover picture here
+% comment indien geen cover foto gewenst
+\newcommand{\omslagfoto}{cover.png}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Numbering style
+\frontmatter
+
+%% Metadata
+\title[tudelft-white]{\titel}
+
+% comment onderstaande regel indien geen subtitel
+\subtitle[tudelft-black]{\subtitel}
+
+\affiliation{\organization}
+\date{\datum}
+
+% Frontmatter chapters
+\input{title-page.tex}
+\tableofcontents
+
+% uncomment onderstaande regel voor een inhoudsopgave
+% een Extended Abstract heeft in de regel geen inhoudsopgave
+%\input{toc.tex}
+
+% Numbering style
+\mainmatter
+
+% Don't count these!
+%% TC:ignore
+% gebruik onderstaande ter controle
+% comment onderstaande (3 regels) in de definitieve versie
+% \quickwordcount{main}
+% \quickcharcount{main}
+% \detailtexcount{main}
+%%TC:endignore
+
+% Main chapters
+
+\input{1-inleiding}
+\input{2-resultaten}
+\input{3-aanbevelingen}
+
+% Appendix chapters
+
+\appendices
+%\bijlagen
+\input{vraag-en-antwoord}
+
+\end{document}
