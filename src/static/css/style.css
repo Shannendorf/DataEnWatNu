@@ -9,3 +9,18 @@
 #likert-form .row {
     margin-bottom: 15px;
 }
+
+h4 {
+    font-family: 'FedraSansBold',Helvetica,Arial,Lucida,sans-serif;
+    color: #ed1b34;
+    font-weight: bold;
+}
+
+.bg-light {
+    background-color: #f7f7f7;
+}
+
+.nav-link a {
+    color: #555555;
+	font-family: 'Open Sans',Helvetica,Arial,Lucida,sans-serif;
+}
