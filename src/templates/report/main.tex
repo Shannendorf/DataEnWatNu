@@ -1,6 +1,6 @@
 \documentclass[whitelogo,openany]{tudelft-report}
 
-%% Dependencies
+%-- Dependencies
 % Appendices
 \usepackage[toc,page]{appendix}
 \renewcommand{\appendixtocname}{Bijlagen}
@@ -42,7 +42,7 @@
 % Custom list spacing
 \usepackage{enumitem}
 
-%% Setup
+%-- Setup
 
 \newcommand{\detailtexcount}[1]{%
   \immediate\write18{texcount -merge -sum -q #1.tex output.bbl > #1.wcdetail }%
@@ -62,7 +62,7 @@
 % Base path for all figures
 \graphicspath{ {figures/} }
 
-%%% FILL THIS IN %%%
+%-- FILL THIS IN --%
 
 % Your title here
 \newcommand{\titel}{Data en wat nu?}
@@ -71,10 +71,10 @@
 \newcommand{\subtitel}{Rapport}
 
 % Your course or project here
-\newcommand{\module}{BEDRIJFSNAAM}
+\newcommand{\module}{\VAR{company}}
 
 % Your date here
-\newcommand{\datum}{01-01-2020}
+\newcommand{\datum}{\VAR{report_date}}
 
 % Your affiliation here
 \newcommand{\organization}{lectoraat Data Intelligence}
@@ -89,14 +89,14 @@
 % comment indien geen cover foto gewenst
 \newcommand{\omslagfoto}{cover.png}
 
-%%%%%%%%%%%%%%%%%%%%
+%---------------------------
 
 \begin{document}
 
 % Numbering style
 \frontmatter
 
-%% Metadata
+%- Metadata
 \title[tudelft-white]{\titel}
 
 % comment onderstaande regel indien geen subtitel
@@ -117,13 +117,13 @@
 \mainmatter
 
 % Don't count these!
-%% TC:ignore
+% TC:ignore
 % gebruik onderstaande ter controle
 % comment onderstaande (3 regels) in de definitieve versie
 % \quickwordcount{main}
 % \quickcharcount{main}
 % \detailtexcount{main}
-%%TC:endignore
+% TC:endignore
 
 % Main chapters
 
