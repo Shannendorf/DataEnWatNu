@@ -1,2 +1,13 @@
 \chapter{Resultaten}
-RESULTATEN HIER
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=140mm, scale=0.9]{figures/\VAR{session_id}.png}
+\end{figure}
+
+%% for group in groups_dict["groups"]
+    \section{\VAR{groups_dict[group]["group"].title}}
+    %% for text in groups_dict[group]["group"].get_texts(groups_dict[group]["score"])
+        \VAR{text.text}
+    %% endfor
+%% endfor

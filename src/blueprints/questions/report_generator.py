@@ -86,16 +86,20 @@ def generate_report(groups_dict, session_id):
 
 	# Copies files to generate report (these files will contain variable info eventually, so will not be copied literally in the future)
     shutil.copyfile(os.path.join(parent, "1-inleiding.tex"), os.path.join(temp_dir.name, "1-inleiding.tex"))
-    shutil.copyfile(os.path.join(parent, "2-resultaten.tex"), os.path.join(temp_dir.name, "2-resultaten.tex"))
     shutil.copyfile(os.path.join(parent, "3-aanbevelingen.tex"), os.path.join(temp_dir.name, "3-aanbevelingen.tex"))
     shutil.copyfile(os.path.join(parent, "main.tex"), os.path.join(temp_dir.name, "main.tex"))
     shutil.copyfile(os.path.join(parent, "title-page.tex"), os.path.join(temp_dir.name, "title-page.tex"))
+    shutil.copyfile(os.path.join("src/static/images", session_id+".png"), os.path.join(fig_dst_dir, session_id+".png"))    
 
     # TEMPORARY QUESTIONS FOR TESTING
     test_q = ["Is this a question?", "Is this also a question?", "How many questions are there?"]
     test_a = ["This is an answer", "Yes", 3]
 
     # Fill in information in template
+    result_template = latex_jinja_env.get_template(os.path.join(parent, "2-resultaten.tex"))
+    result = result_template.render(session_id=session_id, groups_dict=groups_dict)
+    with open(temp_dir.name+"/2-resultaten.tex",'w') as output:
+    	output.write(result)
     qa_template = latex_jinja_env.get_template(os.path.join(parent, "vraag-en-antwoord.tex"))
     qa = qa_template.render(groups_dict=groups_dict)
     with open(temp_dir.name+"/vraag-en-antwoord.tex",'w') as output:
