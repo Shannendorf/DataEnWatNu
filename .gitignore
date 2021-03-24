@@ -5,6 +5,7 @@ src/output/pdf/*.pdf
 src/output/tex/*.tex
 src/static/images/*.png
 !src/static/images/DeWN-logo.png
+!src/static/images/data-intelligence-logo.png
 
 
 
