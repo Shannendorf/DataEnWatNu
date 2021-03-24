@@ -1,0 +1,86 @@
+\begin{titlepage}
+
+\begin{center}
+
+% Insert the Zuyd logo at the bottom of the page.
+
+% Print the title in cyan.
+{\makeatletter
+    \largetitlestyle\fontsize{64}{94}\selectfont\color{tudelft-cyan}\@title
+\makeatother}
+
+% Print the optional subtitle in black.
+{\makeatletter
+\ifx\@subtitle\undefined\else
+    \bigskip
+   {\tudsffamily\fontsize{22}{32}\selectfont\@subtitle}
+    %\titlefont\titleshape\LARGE\@subtitle
+\fi
+\makeatother}
+
+\bigskip
+\bigskip
+
+\ifx\@cover\undefined\else
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=140mm, scale=0.9]{\omslagfoto}
+    \end{figure}
+\fi
+
+\bigskip
+\bigskip
+
+{\makeatletter
+   {\tudsffamily\fontsize{22}{22}\selectfont{\module}}
+\makeatother}
+
+\bigskip
+\bigskip
+
+% by
+
+\bigskip
+\bigskip
+
+% Print the name of the author(s).
+{\makeatletter
+    \largetitlestyle\fontsize{12}{12}\selectfont{\studentNames}
+\makeatother}
+
+\bigskip
+
+{\makeatletter
+   {\tudsffamily\fontsize{10}{10}\selectfont\@date}
+    %\titlefont\titleshape\LARGE\@subtitle
+\makeatother}
+
+\bigskip
+\bigskip
+
+% Print the organization here.
+{\makeatletter
+    \largetitlestyle\fontsize{18}{18}\selectfont{\organization}
+\makeatother}
+
+\bigskip
+\bigskip
+
+% supervisor(s)
+
+\bigskip
+
+% Print the name of the supervisor(s).
+% {\makeatletter
+%     \largetitlestyle\fontsize{12}{12}\selectfont{\supervisorNames}
+% \makeatother}
+
+\end{center}
+
+\begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.south)[anchor=south,inner sep=0pt]{
+        \includegraphics[width=70mm,scale=1.0]{zuyd_logo2.png}
+    };
+\end{tikzpicture}
+
+\end{titlepage}

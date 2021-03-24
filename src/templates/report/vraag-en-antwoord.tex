@@ -1,0 +1,17 @@
+\chapter{Vragen met antwoorden}
+
+%% for group in groups_dict["groups"]
+    \begin{table}[h!tbp]
+    \textbf{VAR{groups_dict[group]["group"].title}
+    \begin{center}
+    \begin{tabular}{p{50mm}| p{90mm}}
+    \emph{Vraag} & \emph{Antwoord}\\
+    %% for question in groups_dict[group]["questions"]
+        \hline
+        \VAR{question["question"].question} & \VAR{question["answer"].format_answer()}\\
+    %% endfor
+    \end{tabular}
+    \end{center}
+    \label{tab:vraag-antwoord-data}
+    \end{table}
+%% endfor
