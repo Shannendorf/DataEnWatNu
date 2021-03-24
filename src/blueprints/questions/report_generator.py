@@ -89,11 +89,11 @@ def generate_report(groups_dict, case):
     shutil.copyfile(os.path.join(parent, "1-inleiding.tex"), os.path.join(temp_dir.name, "1-inleiding.tex"))
     shutil.copyfile(os.path.join(parent, "3-aanbevelingen.tex"), os.path.join(temp_dir.name, "3-aanbevelingen.tex"))
     shutil.copyfile(os.path.join(parent, "title-page.tex"), os.path.join(temp_dir.name, "title-page.tex"))
-    shutil.copyfile(os.path.join("src/static/images", session_id+".png"), os.path.join(fig_dst_dir, session_id+".png"))    
+    shutil.copyfile(os.path.join("src/static/images", case.id+".png"), os.path.join(fig_dst_dir, case.id+".png"))    
 
     # Fill in information in template
     result_template = latex_jinja_env.get_template(os.path.join(parent, "2-resultaten.tex"))
-    result = result_template.render(session_id=session_id, groups_dict=groups_dict)
+    result = result_template.render(session_id=case.id, groups_dict=groups_dict)
     with open(temp_dir.name+"/2-resultaten.tex",'w') as output:
     	output.write(result)
     qa_template = latex_jinja_env.get_template(os.path.join(parent, "vraag-en-antwoord.tex"))
