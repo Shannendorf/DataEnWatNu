@@ -1,3 +1,4 @@
+import datetime
 import tempfile
 import subprocess
 import glob
@@ -44,7 +45,7 @@ def compile_report(temp_dir):
         f"{errors.decode()}")
 
 
-def generate_report(groups_dict, session_id):
+def generate_report(groups_dict, case):
     latex_jinja_env = jinja2.Environment(
     block_start_string = '\BLOCK{',
     block_end_string = '}',
@@ -87,13 +88,8 @@ def generate_report(groups_dict, session_id):
 	# Copies files to generate report (these files will contain variable info eventually, so will not be copied literally in the future)
     shutil.copyfile(os.path.join(parent, "1-inleiding.tex"), os.path.join(temp_dir.name, "1-inleiding.tex"))
     shutil.copyfile(os.path.join(parent, "3-aanbevelingen.tex"), os.path.join(temp_dir.name, "3-aanbevelingen.tex"))
-    shutil.copyfile(os.path.join(parent, "main.tex"), os.path.join(temp_dir.name, "main.tex"))
     shutil.copyfile(os.path.join(parent, "title-page.tex"), os.path.join(temp_dir.name, "title-page.tex"))
     shutil.copyfile(os.path.join("src/static/images", session_id+".png"), os.path.join(fig_dst_dir, session_id+".png"))    
-
-    # TEMPORARY QUESTIONS FOR TESTING
-    test_q = ["Is this a question?", "Is this also a question?", "How many questions are there?"]
-    test_a = ["This is an answer", "Yes", 3]
 
     # Fill in information in template
     result_template = latex_jinja_env.get_template(os.path.join(parent, "2-resultaten.tex"))
@@ -104,12 +100,17 @@ def generate_report(groups_dict, session_id):
     qa = qa_template.render(groups_dict=groups_dict)
     with open(temp_dir.name+"/vraag-en-antwoord.tex",'w') as output:
     	output.write(qa)
+
+    main_template = latex_jinja_env.get_template(os.path.join(parent, "main.tex"))
+    main = main_template.render(company=case.company, report_date=datetime.date.today())
+    with open(temp_dir.name+"/main.tex", "w") as output:
+        output.write(main)
     
     # Generate PDF
     compile_report(temp_dir)
 
     # Copy report pdf from temp directory to reports folder
-    shutil.copyfile(os.path.join(temp_dir.name, "main.pdf"), os.path.join("src/output/pdf", session_id+".pdf"))
+    shutil.copyfile(os.path.join(temp_dir.name, "main.pdf"), os.path.join("src/output/pdf", case.id+".pdf"))
 
     # Delete temp folder
     temp_dir.cleanup()

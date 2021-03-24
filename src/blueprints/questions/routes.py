@@ -125,7 +125,7 @@ def advice():
     for answer in case.answer_case.all():
         answers_list.append((answer.answered_question.question,
             answer.format_answer()),)
-    generate_report(groups_dict, case.id)
+    generate_report(groups_dict, case)
     
     # Sends e-mail with report if e-mail address is entered
     form = EmailForm()

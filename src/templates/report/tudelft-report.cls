@@ -599,7 +599,7 @@
     {\flushright\largetitlestyle}
     {\fontsize{96}{96}\selectfont\thechapter}
     {0pt}
-    {\chaptitlestyle\Huge\color{title}}
+    {\chaptitlestyle\Huge\color{tudelft-cyan}}
 \titlespacing{\chapter}{0pt}{0pt}{2\baselineskip}
 %% In the table of contents, a chapter is similar to a part, except that it is
 %% preceded by half an empty line.

@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    ports:
+        - "5432:5432"
+    environment:
+      POSTGRES_DB: DataEnWatNu_db
+      POSTGRES_USER: DataEnWatNuUser
+      POSTGRES_PASSWORD: changeme
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    environment: 
+      DATABASE_URL: postgresql+psycopg2://DataEnWatNuUser:changeme@192.168.1.201/DataEnWatNu_db
+
+
+volumes:
+  db-data:
