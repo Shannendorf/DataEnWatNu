@@ -4,8 +4,9 @@ from sqlalchemy.sql.expression import select
 
 from src.blueprints.questions import bp
 from src.blueprints.questions.forms import EmailForm, IntroForm, \
-    QuestionnaireForm, LoginForm
-from src.blueprints.questions.report_generator import generate_report, generate_radarchart
+    QuestionnaireForm, LoginForm, IntroFormNoListSelection
+from src.blueprints.questions.report_generator import generate_report, \
+    generate_radarchart
 from src.blueprints.questions.email import send_email
 from src.models import Question, QuestionType, Answer, Case, QuestionGroup, \
     Code, QuestionList
@@ -33,12 +34,20 @@ def start():
 @bp.route("/questions/intro", methods=["GET", "POST"])
 def intro():
     case = check_case()
-    form = IntroForm()
-    form.selection.choices = [(l.id, l.name) for l in QuestionList\
-        .query().all()]
+    question_lists = QuestionList.query().all()
+    if len(question_lists) == 1:
+        form = IntroFormNoListSelection()
+    else:
+        form = IntroForm()
+        form.selection.choices = [(l.id, l.name) for l in QuestionList\
+            .query().all()]
     if form.validate_on_submit():
-        selected_list = QuestionList.get_by_id(form.selection.data)
-        case.update(list_selected=selected_list.id)
+        if len(question_lists) == 1:
+            selected_list = QuestionList.get_by_id(question_lists[0].id)
+        else:
+            selected_list = QuestionList.get_by_id(form.selection.data)
+        case.update(list_selected=selected_list.id, company=form.company.data,
+            email=form.email.data)
         return redirect(url_for("questions.question", question_id=0))
     return render_template("intro.html", form=form)
         

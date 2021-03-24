@@ -8,8 +8,17 @@
   {{ form.hidden_tag() }}
 
   <div class="container" id="intro-form">
+    {{ form.company.label }}<br>
+    {{ form.company() }}<br><br>
+
+    {{ form.email.label }}<br>
+    {{ form.email() }}<br><br>
+
+    {% if form.has_selection %}
     {{ form.selection.label }}<br>
     {{ form.selection() }}<br><br>
+    {% endif %}
+
     {{ form.submit() }}
   </div>
 </form>

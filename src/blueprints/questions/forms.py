@@ -1,5 +1,7 @@
 # Forms for the questions module
+from ast import Str
 from flask_wtf import FlaskForm
+from sqlalchemy.sql.sqltypes import String
 from wtforms import StringField, SubmitField, SelectField, IntegerField,\
     BooleanField, RadioField
 from wtforms.validators import DataRequired, Email
@@ -100,6 +102,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Akkoord en verder")
 
 
+class IntroFormNoListSelection(FlaskForm):
+    has_selection = False
+    company = StringField("Bedrijfsnaam", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Start vragenlijst")
+
+
 class IntroForm(FlaskForm):
+    has_selection = True
+    company = StringField("Bedrijfsnaam", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
     selection = SelectField("Select one")
     submit = SubmitField("Select")

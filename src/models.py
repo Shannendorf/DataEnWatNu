@@ -151,7 +151,9 @@ class Case(Model):
     __tablename__ = 'Case'
 
     id = Column(String, primary_key=True)
-    start = Column(DateTime)
+    start = Column(DateTime, index=True, default=datetime.utcnow())
+    company = Column(String, index=True)
+    email = Column(String)
     code_used = Column(Integer, ForeignKey("Code.id"))
     list_selected = Column(Integer, ForeignKey("QuestionList.id"))
 
