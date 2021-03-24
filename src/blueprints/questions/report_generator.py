@@ -57,7 +57,7 @@ def compile_report(temp_dir):
         f"{errors.decode()}")
 
 
-def generate_report(answers_list, session_id):
+def generate_report(groups_dict, session_id):
     latex_jinja_env = jinja2.Environment(
     block_start_string = '\BLOCK{',
     block_end_string = '}',
@@ -110,7 +110,7 @@ def generate_report(answers_list, session_id):
 
     # Fill in information in template
     qa_template = latex_jinja_env.get_template(os.path.join(parent, "vraag-en-antwoord.tex"))
-    qa = qa_template.render(test_q=test_q, test_a=test_a)
+    qa = qa_template.render(groups_dict=groups_dict)
     with open(temp_dir.name+"/vraag-en-antwoord.tex",'w') as output:
     	output.write(qa)
     
