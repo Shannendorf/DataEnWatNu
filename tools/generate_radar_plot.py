@@ -53,8 +53,8 @@ def generate_radar_chart(data, output_path):
     plt.yticks([5, 10, 15, 20], ["5", "10", "15", "20"], color="grey", size=7)
     plt.ylim(0, 20)
 
-    ax.plot(angles, values, linewidth=1, linestyle="solid")
-    ax.fill(angles, values, "b", alpha=0.1)
+    ax.plot(angles, values, linewidth=1, linestyle="solid", color="#e30d29")
+    ax.fill(angles, values, "#e30d29", alpha=0.1)
 
     if not os.path.exists(os.path.split(output_path)[0]):
         os.mkdir(os.path.split(output_path)[0])
@@ -69,5 +69,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     data = json.loads(args.data)
     output_path = args.output
-)
+
     generate_radar_chart(data, output_path)
