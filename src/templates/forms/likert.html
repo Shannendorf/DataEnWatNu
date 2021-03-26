@@ -12,6 +12,9 @@
       {% for option in getattr(form, question) %}
         <div class="col" align="center">{{ option }}</div>
       {% endfor %}
+      {% for error in getattr(form, question).errors %}
+        <span style="color: red;">{{ error }}</span>
+      {% endfor %}
     </div>
   {% endfor %}
   <hr>

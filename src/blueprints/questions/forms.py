@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from sqlalchemy.sql.sqltypes import String
 from wtforms import StringField, SubmitField, SelectField, IntegerField,\
     BooleanField, RadioField
+from wtforms import validators
 from wtforms.validators import DataRequired, Email
 
 from src.models import LikertOption, Question
@@ -20,16 +21,18 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
             .order_by(Question.weight).all()):
         question_id = f"q{i}"
         question_ids[question_id] = question
+        required_msg = "Dit veld is verplicht"
 
         if question.questiontype == "likert":
             setattr(BaseForm, question_id, RadioField(question.question,
-                choices=[(o.value, o.text) for o in likert_options]))
+                choices=[(o.value, o.text) for o in likert_options],
+                validators=[DataRequired(message=required_msg)]))
         elif question.questiontype == "open":
             setattr(BaseForm, question_id,
-                StringField(question.question, validators=[DataRequired()]))
+                StringField(question.question, validators=[DataRequired(message=required_msg)]))
         elif question.questiontype == "integer":
             setattr(BaseForm, question_id,
-                IntegerField(question.question, validators=[DataRequired()]))
+                IntegerField(question.question, validators=[DataRequired(message=required_msg)]))
         elif question.questiontype == "bool":
             setattr(BaseForm, question_id, BooleanField(question.question))
         elif question.questiontype == "multiplechoice":
@@ -98,14 +101,14 @@ def get_form(formtype):
 
 
 class LoginForm(FlaskForm):
-    code = StringField("Login code", validators=[DataRequired()])
+    code = StringField("Login code", validators=[DataRequired(message="Dit veld is verplicht")])
     submit = SubmitField("Akkoord en verder")
 
 
 class IntroFormNoListSelection(FlaskForm):
     has_selection = False
-    company = StringField("Bedrijfsnaam", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    company = StringField("Bedrijfsnaam", validators=[DataRequired(message="Dit veld is verplicht")])
+    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mail adres")])
     submit = SubmitField("Start vragenlijst")
 
 
