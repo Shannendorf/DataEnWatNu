@@ -47,7 +47,9 @@ def intro():
         else:
             selected_list = QuestionList.get_by_id(form.selection.data)
         case.update(list_selected=selected_list.id, company=form.company.data,
-            email=form.email.data)
+            email=form.email.data, branch=form.branch.data,
+            company_size=form.company_size.data,
+            participant_function=form.participant_function.data)
         return redirect(url_for("questions.question", question_id=0))
     return render_template("intro.html", form=form)
         
