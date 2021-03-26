@@ -6,6 +6,7 @@ from wtforms import StringField, SubmitField, SelectField, IntegerField,\
     BooleanField, RadioField
 from wtforms import validators
 from wtforms.validators import DataRequired, Email
+from wtforms.widgets.core import Select
 
 from src.models import LikertOption, Question
 
@@ -105,16 +106,50 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Akkoord en verder")
 
 
+
+
+branch_options = [
+    "Activiteiten van extraterritoriale organisaties en lichamen",
+    "Landbouw, bosbouw en visserij",
+    "Mijnbouw en steengroeven",
+    "Productie",
+    "Elektriciteit, gas, stroom en airconditioning",
+    "Watervoorziening, riolering, afvalbeheer en saneringsactiviteiten",
+    "Constructie",
+    "Groot- en detailhandel, reparatie van motervoertuigen en motorfietsen",
+    "Transport en opslag",
+    "Accommodatie en maaltijden",
+    "Informatie en communicatie",
+    "Financiële en verzekeringsactiviteiten",
+    "Vastgoedactiviteiten",
+    "Professionele, wetenschappelijke en technische activiteiten",
+    "Administratieve en ondersteunende activiteiten",
+    "Openbaar bestuur en defensie, verplichte sociale zekerheid",
+    "Onderwijs",
+    "Menselijke gezondheid en sociale activiteiten",
+    "Kust, amusement en recreatie",
+    "Overige dienstenacitiveiten",
+    "Huishoudens als werkgever, ongedifferentieerde goederen- en diensten, producerende activiteiten"
+]
+
+
+
 class IntroFormNoListSelection(FlaskForm):
     has_selection = False
     company = StringField("Bedrijfsnaam", validators=[DataRequired(message="Dit veld is verplicht")])
     email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mail adres")])
+    branch = SelectField("Bedrijfsbranch", choices=branch_options)
+    company_size = StringField("Bedrijfsgrote", validators=[DataRequired(message="Dit veld is verplicht")])
+    participant_function = StringField("Uw functie", validators=[DataRequired(message="Dit veld is verplicht")])
     submit = SubmitField("Start vragenlijst")
 
 
 class IntroForm(FlaskForm):
     has_selection = True
-    company = StringField("Bedrijfsnaam", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    company = StringField("Bedrijfsnaam", validators=[DataRequired(message="Dit veld is verplicht")])
+    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mail adres")])
+    branch = SelectField("Bedrijfsbranch", choices=branch_options)
+    company_size = StringField("Bedrijfsgrote", validators=[DataRequired(message="Dit veld is verplicht")])
+    participant_function = StringField("Uw functie", validators=[DataRequired(message="Dit veld is verplicht")])
     selection = SelectField("Select one")
     submit = SubmitField("Select")

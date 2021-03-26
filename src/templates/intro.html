@@ -9,14 +9,32 @@
 
   <div class="container" id="intro-form">
     {{ form.company.label }}<br>
-    {{ form.company() }}<br>
+    {{ form.company(size=72) }}<br>
     {% for error in form.company.errors %}
       <span style="color: red;">{{ error }}</span>
     {% endfor %}<br><br>
 
     {{ form.email.label }}<br>
-    {{ form.email() }}<br>
+    {{ form.email(size=72) }}<br>
     {% for error in form.email.errors %}
+      <span style="color: red;">{{ error }}</span>
+    {% endfor %}<br><br>
+
+    {{ form.branch.label }}<br>
+    {{ form.branch() }}<br>
+    {% for error in form.branch.errors %}
+      <span style="color: red;">{{ error }}</span>
+    {% endfor %}<br><br>
+
+    {{ form.company_size.label }}<br>
+    {{ form.company_size(size=72) }}<br>
+    {% for error in form.company_size.errors %}
+      <span style="color: red;">{{ error }}</span>
+    {% endfor %}<br><br>
+
+    {{ form.participant_function.label }}<br>
+    {{ form.participant_function(size=72) }}<br>
+    {% for error in form.participant_function.errors %}
       <span style="color: red;">{{ error }}</span>
     {% endfor %}<br><br>
 

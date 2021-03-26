@@ -154,6 +154,9 @@ class Case(Model):
     start = Column(DateTime, index=True, default=datetime.utcnow())
     company = Column(String, index=True)
     email = Column(String)
+    branch = Column(String)
+    company_size = Column(String)
+    participant_function = Column(String)
     code_used = Column(Integer, ForeignKey("Code.id"))
     list_selected = Column(Integer, ForeignKey("QuestionList.id"))
 
