@@ -7,7 +7,7 @@
   </div>
   <hr>
   {% for question in question_fields.keys() %}
-    <div class="row">
+    <div class="row" style="padding-bottom: 20px;">
       <div class="col-4">{{ getattr(form, question).label }}</div>
       {% for option in getattr(form, question) %}
         <div class="col" align="center">{{ option }}</div>
@@ -25,6 +25,9 @@
       {{ getattr(form, question).label }}<br>
       {{ getattr(form, question)() }}
     </p>
+    {% for error in getattr(form, question).errors %}
+      <span style="color: red;">{{ error }}</span>
+    {% endfor %}
     <hr>
   {% endfor %}
 </div>
