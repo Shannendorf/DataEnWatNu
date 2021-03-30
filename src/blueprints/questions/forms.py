@@ -137,9 +137,9 @@ branch_options = [
 class IntroFormNoListSelection(FlaskForm):
     has_selection = False
     company = StringField("Bedrijfsnaam", validators=[DataRequired(message="Dit veld is verplicht")])
-    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mail adres")])
+    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mailadres")])
     branch = SelectField("Bedrijfsbranch", choices=branch_options)
-    company_size = StringField("Bedrijfsgrote", validators=[DataRequired(message="Dit veld is verplicht")])
+    company_size = StringField("Bedrijfsgrootte", validators=[DataRequired(message="Dit veld is verplicht")])
     participant_function = StringField("Uw functie", validators=[DataRequired(message="Dit veld is verplicht")])
     submit = SubmitField("Start vragenlijst")
 
@@ -147,9 +147,9 @@ class IntroFormNoListSelection(FlaskForm):
 class IntroForm(FlaskForm):
     has_selection = True
     company = StringField("Bedrijfsnaam", validators=[DataRequired(message="Dit veld is verplicht")])
-    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mail adres")])
+    email = StringField("Email", validators=[DataRequired(message="Dit veld is verplicht"), Email(message="Geen valide e-mailadres")])
     branch = SelectField("Bedrijfsbranch", choices=branch_options)
-    company_size = StringField("Bedrijfsgrote", validators=[DataRequired(message="Dit veld is verplicht")])
+    company_size = StringField("Bedrijfsgrootte", validators=[DataRequired(message="Dit veld is verplicht")])
     participant_function = StringField("Uw functie", validators=[DataRequired(message="Dit veld is verplicht")])
     selection = SelectField("Select one")
     submit = SubmitField("Select")

@@ -3,30 +3,85 @@
 {% block app_content %}
 <div class="container">
   <h4>Start vragenlijst - Login</h4>
+  <p>
+    Het creëren van toegevoegde waarde met data is voor de meeste mkb’ers een grote uitdaging. Ze vragen zich letterlijk af “Ik heb data, en wat nu?”. We willen u helpen van de grond te komen door in kaart te brengen waar u nu staat en een plan te maken dat past bij uw ambities en middelen. Waar mogelijk kunnen we samen projecten oppakken binnen het Lectoraat Data Intelligence samen met studenten van de ICT academie en andere disciplines. Daarnaast bieden we een gesprek met een expert om u te helpen een plan te maken om uw organisatie intelligenter te maken met behulp van data. 
+  </p>
+  <p>
+    Deze vragenlijst is de eerste stap in het bepalen van het Data Intelligence Readiness level van uw organisatie. Door middel van deze zelfevaluatie krijgen we al een beeld van waar uw organisatie staat. Tijdens een 1 op 1 vervolggesprek gaan we met deze zelfevaluatie als basis kijken waar de mogelijkheden liggen voor uw organisatie. Op deze manier kunnen we samen vaststellen wat de juiste vervolgstappen zijn voor uw organisatie.  
+  </p>
+  <p>
+    Wij willen graag samen met u ontdekken of we met data toegevoegde waarde kunnen creëren voor uw organisatie. Zet uw eerste stap en vul de scan in.
+  </p>
 </div>
 <form action="" method="post">
   {{ form.hidden_tag() }}
 
   <div class="container" id="login-form">
-    {{ form.code.label }}<br>
+    <strong>{{ form.code.label }}</strong><br>
     {{ form.code() }}<br>
     <br>
+    {{ form.submit() }}<br><br>
 
     <div class="card" id="privacy">
-      <h5>
-        PRIVACY VERKLARING
-      </h5>
+      <h5>PRIVACY VERKLARING</h5>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sollicitudin ac orci phasellus egestas. Varius sit amet mattis vulputate. Sit amet consectetur adipiscing elit ut. Sit amet est placerat in egestas erat imperdiet. Sed arcu non odio euismod. Consectetur adipiscing elit ut aliquam purus sit amet luctus. Viverra vitae congue eu consequat ac. Porttitor massa id neque aliquam. Mi tempus imperdiet nulla malesuada pellentesque. Ornare lectus sit amet est placerat in egestas.
+        In deze privacyverklaring leggen we uit hoe wij als organisatie (Zuyd Hogeschool) omgaan met uw persoonsgegevens: welke we verzamelen en waarvoor we ze gebruiken. Ook leggen we uit hoe u uw gegevens kunt inzien, wijzigen of verwijderen.
+      </p>
+      <h5>Wie zijn wij</h5>
+      <p>
+        Deze scan is in het beheer van het Lectoraat Data Intelligence van Zuyd Hogeschool 
       </p>
       <p>
-        Tristique senectus et netus et. Maecenas pharetra convallis posuere morbi. Etiam sit amet nisl purus in mollis nunc sed. A diam maecenas sed enim ut sem viverra aliquet. Leo vel orci porta non pulvinar neque laoreet. Laoreet sit amet cursus sit. Urna id volutpat lacus laoreet non curabitur. Dui faucibus in ornare quam viverra orci sagittis eu volutpat. Maecenas volutpat blandit aliquam etiam erat velit scelerisque in dictum. Quis eleifend quam adipiscing vitae. A lacus vestibulum sed arcu non odio euismod lacinia.
+        Het lectoraat Data Intelligence bestudeert de mogelijkheden en nieuwste inzichten in de wereld van Data Intelligence. Wij bedenken oplossingen op het gebied van slim omgaan met data. We werken het liefst aan maatschappelijke projecten die Limburg sterker maken. Onze doelstelling is het ontwikkelen en valideren van datagedreven innovatieve toepassingen (intelligente software en interactie ter sturing en ondersteuning van menselijk handelen in de dagelijkse woon-, leef- en werkomgeving).  
+      </p>
+      <h5>Hoe kan ik jullie bereiken? </h5>
+      <p>
+        Neem contact op via: 
+        Tel: 045 400 6400 
+        E-Mail: <a href="mailto:lectoraat.dataintelligence@zuyd.nl">lectoraat.dataintelligence@zuyd.nl</a>
+      </p>
+      <h5>Persoonsgegevens die door ons bij deze scan worden verwerkt </h5>
+      <p>
+        Wij registeren uw e-mailadres, functie en bedrijfsnaam om contact met u op te nemen voor de mogelijk volgende stappen in het gezamenlijk creëren van toegevoegde waarde op basis van data.
+      </p>
+      <h5>Hoe lang bewaart het Lectoraat Data Intelligence uw persoonsgegevens? </h5>
+      <p>
+        Wij bewaren uw persoonsgegevens niet langer dan strikt noodzakelijk is voor het realiseren van de doelstellingen waarvoor uw persoonsgegevens zijn verkregen.
+      </p>
+      <h5>Deelt het Lectoraat Data Intelligence uw persoonsgegevens met derden?</h5>
+      <p>
+        Wij delen uw persoonsgegevens niet met derden. 
+      </p>
+      <h5>Waarvoor wordt de overige data die verzameld wordt gebruikt?</h5>
+      <p>
+        De data wordt alleen gebruikt voor onderzoeksdoeleinden binnen Zuyd Hogeschool en haar onderzoekspartners die bij dit project betrokken zijn. Hierbij worden de persoonsgegevens niet gedeeld. 
+      </p>
+      <h5>Uw rechten</h5>
+      <p>
+        U hebt het recht de persoonsgegevens die het Lectoraat Data Intelligence van u verwerkt in te zien, te corrigeren, bezwaar te maken tegen het gebruik ervan, het gebruik te beperken, over te dragen of te verwijderen, tenzij Lectoraat Data Intelligence deze rechten niet kan inwilligen op grond van een wettelijke verplichting. 
+      </p>
+      <p>
+        U kunt uw bezwaar of verzoek tot inzage, correctie, beperking, overdracht of verwijdering sturen naar privacy@zuyd.nl. Wel stelt het Lectoraat Data Intelligence vooraf graag vast dat dit verzoek van u afkomstig is. Wij zullen vervolgens zo spoedig mogelijk, maar in ieder geval binnen dertig dagen, op uw verzoek reageren. 
+      </p>
+      <h5>Klachten</h5>
+      <p>
+        Indien u van mening bent dat het Lectoraat Data Intelligence uw persoonsgegevens onrechtmatig heeft gebruikt of u niet tevreden bent met de reactie van het Lectoraat Data Intelligence op uw verzoek, dan heeft u het recht een klacht in te dienen bij de Autoriteit Persoonsgegevens of naar de rechter te gaan. Meer informatie hierover vindt u op https://www.autoriteitpersoonsgegevens.nl. Desalniettemin verzoeken wij u om uw klacht eerst kenbaar te maken bij het Lectoraat Data Intelligence via privacy@zuyd.nl. 
+      </p>
+      <h5>Verantwoordelijkheden van het Lectoraat Data Intelligence</h5>
+      <p>
+        Zuyd Hogeschool treedt op als de verwerkingsverantwoordelijke als bedoeld in de Algemene Verordening Gegevensbescherming: 
+      </p>
+      <p>
+        bepaalt voor welke andere doeleinden de persoonsgegevens mogen worden verwerkt zolang deze doeleinden in overeenstemming zijn met het doel waarvoor de persoonsgegevens door het Lectoraat Data Intelligence werden verkregen; 
+      </p>
+      <h5>Functionaris Gegevensbescherming</h5>
+      <p>
+        Zuyd Hogeschool heeft een Functionaris Gegevensbescherming (FG) aangesteld. De FG draagt onder meer zorg voor het toezicht op de verwerking van persoonsgegevens door het Lectoraat Data Intelligence. Als u ondanks het bovenstaande vermoedt dat uw gegevens niet goed beveiligd zijn, denkt dat misbruik is gemaakt van uw persoonsgegevens of meent dat een juiste verwerking van persoonsgegevens onvoldoende door het Lectoraat Data Intelligence wordt gewaarborgd, neem dan contact op via functionarisgegevensbescherming@zuyd.nl.
       </p>
     </div>
 
     <br>
 
-    {{ form.submit() }}
   </div>
 </form>
 {% endblock %}

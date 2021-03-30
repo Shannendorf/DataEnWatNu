@@ -69,7 +69,7 @@ class Answer(Model):
                     LikertOption.group_id == self.group,
                     LikertOption.value == int(self.answer)))\
                 .first()
-            return f"{option.text} ({option.value})"
+            return f"{option.text}"
         return self.answer
 
 

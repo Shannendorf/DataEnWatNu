@@ -134,8 +134,8 @@ def advice():
     if form.validate_on_submit():
         email_address = [form.answer.data]
         send_email('Data en wat nu rapport', current_app.config['ADMINS'][0], email_address, 'In de bijlage treft u het Data en wat nu rapport aan.', 'In de bijlage treft u het Data en wat nu rapport aan.', session_id)
-    return render_template('advice.html', extra_text="Dit is de eindpagina", 
-        title="Eindpagina", form=EmailForm(), groups_dict=groups_dict, case_id=case.id)
+    return render_template('advice.html', extra_text="Onderstaand kunt u uw resultaten zien en het bijbehorende rapport downloaden.", 
+        title="Overzicht Resultaten", form=EmailForm(), groups_dict=groups_dict, case_id=case.id)
 
 # Route for report download
 @bp.route('/report', methods=['GET'])

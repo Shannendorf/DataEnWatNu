@@ -9,7 +9,7 @@
 <br><br>
 <div class="row">
   <div class="col-md-{% if col_size %}{{ col_size }}{% else %}4{% endif %}">
-    <a href="{{ url_for('questions.report') }}" target="_blank" role="button">Download report</a>
+    <a href="{{ url_for('questions.report') }}" target="_blank" role="button">Download rapport</a>
   </div>
 </div>
 <div class="row">
@@ -17,7 +17,7 @@
 </div>
 <br>
 <div>
-  <h2>Advies</h2>
+  <h2>Resultaten</h2>
   {% for group in groups_dict["groups"] %}
     {% if groups_dict[group]["group"].group_type == "likert" %}
       <hr>
