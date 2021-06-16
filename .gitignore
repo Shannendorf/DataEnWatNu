@@ -6,6 +6,10 @@ src/output/tex/*.tex
 src/static/images/*.png
 !src/static/images/DeWN-logo.png
 !src/static/images/data-intelligence-logo.png
+data/db/*
+!data/db/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
 
 
 

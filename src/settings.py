@@ -13,7 +13,7 @@ DEV = os.environ.get('DEVELOPMENT') or False
 
 ## DB Settings
 SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-    'postgresql+psycopg2://postgres:1234@127.0.0.1:8000/DataEnWatNu_db'
+    'postgresql+psycopg2://postgres:mysecretpassword@127.0.0.1:5432/DataEnWatNu_db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 ## Auth Settings
