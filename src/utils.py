@@ -1,6 +1,6 @@
 import logging
-from flask import has_request_context, request, redirect, url_for
-from functools import wraps
+from flask import has_request_context, request, redirect, url_for, Response
+from typing import Union
 
 from src.models import Case
 
@@ -17,7 +17,7 @@ class RequestFormatter(logging.Formatter):
         return super().format(record)
 
 
-def check_case():
+def check_case() -> Union[Case, Response]:
     """Checks if the request has a 'sessionID' cookie and if this ID is
     linked to an existing case. If this is true, then the case is
     returned. If not, the user is redirected to the start page.

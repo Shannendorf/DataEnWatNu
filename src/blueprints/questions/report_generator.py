@@ -5,16 +5,9 @@ import glob
 import shutil
 import jinja2
 import os
-import pandas as pd
-import matplotlib.pyplot as plt
-from math import pi
-from jinja2 import Template
-from pdflatex import PDFLaTeX
 
 
 def generate_radarchart(groups_dict, scores, session_id):
-    import subprocess
-
     data = {"labels": [], "data": {}}
     for group in groups_dict["groups"]:
         current_group = groups_dict[group]
@@ -32,7 +25,6 @@ def generate_radarchart(groups_dict, scores, session_id):
         "--data", data_str,
         "--output", output_path
     ])
-
 
 
 def compile_report(temp_dir):

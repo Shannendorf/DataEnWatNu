@@ -3,7 +3,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.realpath(os.path.join(
+    os.path.dirname(__file__), "..")))
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,7 +12,7 @@ from argparse import ArgumentParser
 from math import pi
 
 
-def generate_radar_chart(data, output_path):
+def generate_radar_chart(data: str, output_path: str):
     radar_data = {}
     radar_data["group"] = []
     label_count = len(data["labels"])

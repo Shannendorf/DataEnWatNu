@@ -6,4 +6,3 @@ from src.blueprints.main import bp
 @bp.route('/')
 def index():
     return redirect(url_for("questions.start"))
-    return render_template('index.html')

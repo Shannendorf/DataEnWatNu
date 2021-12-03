@@ -1,7 +1,7 @@
 # Models
 from datetime import datetime
-from typing import Type
-from sqlalchemy import Column, Integer, String, Text, ARRAY, ForeignKey, \
+from typing import List, Union
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, \
     DateTime, Table, Boolean, and_, Float
 from sqlalchemy.orm import backref, relationship
 from secrets import token_urlsafe
@@ -40,7 +40,7 @@ class Question(Model):
     
     id = Column(Integer, primary_key=True)
     question = Column(Text)
-    options = Column(ARRAY(String))
+    options = Column(JSON)
     weight = Column(Integer)
     reversed_score = Column(Boolean, default=False)
     questiontype = Column(String(64), ForeignKey('QuestionType.name'))
@@ -62,7 +62,7 @@ class Answer(Model):
     case = Column(String, ForeignKey('Case.id'), primary_key=True)
     group = Column(Integer, ForeignKey("QuestionGroup.id"))
 
-    def format_answer(self):
+    def format_answer(self) -> str:
         if self.answer_group.group_type == "likert":
             option = LikertOption.query()\
                 .filter(and_(
@@ -107,21 +107,21 @@ class QuestionGroup(Model):
         primaryjoin=(QuestionListQuestionGroup.c.question_group_id == id),
         backref=backref("list_groups", lazy="dynamic"), lazy="dynamic")
 
-    def add_question(self, question):
+    def add_question(self, question: Question):
         if self.group_type != "other" and question.questiontype != self.group_type:
             raise RuntimeError(f"QuestionGroup of type {self.group_type} " +
                 f"cannot contain questions of type {question.questiontype}")
         self.questions.append(question)
         self.save()
 
-    def add_likert_option(self, option):
+    def add_likert_option(self, option: LikertOption):
         if self.group_type != "likert":
             raise RuntimeError("Cannot add likert option to group with " +
                 f"type {self.group_type}")
         self.likert_options.append(option)
         self.save()
 
-    def calculate_score_for_case(self, case):
+    def calculate_score_for_case(self, case: "Case") -> int:
         if self.group_type != "likert":
             return 0
         options = self.likert_options.order_by(LikertOption.weight).all()
@@ -163,7 +163,7 @@ class Case(Model):
     answer_case = relationship('Answer', backref='sessioncase', lazy='dynamic')
 
     @classmethod
-    def create_case(cls, code_used):
+    def create_case(cls, code_used: "Code") -> "Case":
         c_id = token_urlsafe(128)
         while cls.query().filter_by(id=c_id).with_entities(cls.id).count() != 0:
             c_id = token_urlsafe(128)
@@ -181,7 +181,7 @@ class Code(Model):
     cases = relationship("Case", backref="case_code", lazy="dynamic")
 
     @classmethod
-    def get_code(cls, code):
+    def get_code(cls, code: str) -> "Code":
         return cls.query().filter_by(code=code).first()
         
 
@@ -199,7 +199,7 @@ class QuestionList(Model):
         primaryjoin=(QuestionListQuestionGroup.c.question_list_id == id),
         backref=backref("group_lists", lazy="dynamic"), lazy="dynamic")
 
-    def add_group(self, group):
+    def add_group(self, group: Union[int, QuestionGroup]):
         if type(group) == int:
             group = QuestionGroup.get_by_id(group)
         if not group:
@@ -211,7 +211,7 @@ class QuestionList(Model):
             self.groups.append(group)
             self.save()
 
-    def add_groups(self, groups):
+    def add_groups(self, groups: List[QuestionGroup]):
         for group in groups:
             self.add_group(group)
 

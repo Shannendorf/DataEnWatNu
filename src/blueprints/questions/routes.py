@@ -34,6 +34,8 @@ def start():
 @bp.route("/questions/intro", methods=["GET", "POST"])
 def intro():
     case = check_case()
+    if (type(case) != Case):
+        return case
     question_lists = QuestionList.query().all()
     if len(question_lists) == 1:
         form = IntroFormNoListSelection()
@@ -137,6 +139,7 @@ def advice():
     return render_template('advice.html', extra_text="Onderstaand kunt u uw resultaten zien en het bijbehorende rapport downloaden.", 
         title="Overzicht Resultaten", form=EmailForm(), groups_dict=groups_dict, case_id=case.id)
 
+
 # Route for report download
 @bp.route('/report', methods=['GET'])
 def report():
@@ -144,8 +147,8 @@ def report():
     if not session_id:
         redirect(url_for('main.index'))
     return send_file(
-    'output/pdf/'+session_id+'.pdf',
-    mimetype='application/pdf',
-    attachment_filename='DataEnWatNu.pdf',
-    as_attachment=True
+        'output/pdf/'+session_id+'.pdf',
+        mimetype='application/pdf',
+        attachment_filename='DataEnWatNu.pdf',
+        as_attachment=True
     )
