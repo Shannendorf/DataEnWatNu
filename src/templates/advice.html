@@ -13,6 +13,16 @@
   </div>
 </div>
 <div class="row">
+  <form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div id="email-report-form">
+      {{ form.answer.label }}<br>
+      {{ form.answer() }}<br><br>
+      {{ form.submit() }}
+    </div>
+  </form>
+</div>
+<div class="row">
   <img src="/static/images/{{ case_id }}.png" style="max-width: 700px; width: 100%">
 </div>
 <br>

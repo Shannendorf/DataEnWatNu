@@ -3,7 +3,7 @@ services:
   db:
     image: postgres
     ports:
-        - "5432:5432"
+        - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: DataEnWatNu_db
       POSTGRES_USER: DataEnWatNuUser
@@ -11,15 +11,29 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/db:/var/lib/postgresql/data
+    networks:
+      - dewnnet
 
   app:
     build: .
     depends_on:
       - db
+    links:
+      - "db:db"
     ports:
       - "5000:5000"
     environment: 
-      DATABASE_URL: postgresql+psycopg2://DataEnWatNuUser:changeme@145.20.17.124/DataEnWatNu_db
+      MAIL_SERVER: smtp.googlemail.com
+      MAIL_PORT: 587
+      MAIL_USE_TLS: 1
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      DATABASE_URL: postgresql+psycopg2://DataEnWatNuUser:changeme@db/DataEnWatNu_db
     restart: unless-stopped
     volumes:
       - ./data/reports:/usr/src/app/src/output/pdf
+    networks:
+      - dewnnet
+
+networks:
+  dewnnet:

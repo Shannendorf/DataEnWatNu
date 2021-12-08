@@ -11,6 +11,7 @@ APP_NAME = os.environ.get('APP_NAME') or 'APP_NAME'
 SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_urlsafe()
 TESTING = os.environ.get('TESTING') or False
 DEV = os.environ.get('DEVELOPMENT') or False
+LATEX_PATH = os.environ.get("LATEX_PATH") or "pdflatex"
 
 ## DB Settings
 SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
@@ -39,9 +40,9 @@ LOGGING_SIZE = os.environ.get('LOGGING_SIZE') or 10240
 LOGGING_EMAIL = os.environ.get("LOGGING_EMAIL")
 
 ## Email Settings
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 587
-MAIL_USE_TLS = 1
-MAIL_USERNAME = '639datatest@gmail.com'
-MAIL_PASSWORD = 'Ditiseenaardappelwell!569659#%'
-ADMINS = ['639datatest@gmail.com']
+MAIL_SERVER = os.environ.get("MAIL_SERVER")
+MAIL_PORT = os.environ.get("MAIL_PORT") or 587
+MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS") or 1
+MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+ADMINS = os.environ.get("ADMINS", "").split(";")

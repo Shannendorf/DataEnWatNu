@@ -1,12 +1,8 @@
 # Forms for the questions module
-from ast import Str
 from flask_wtf import FlaskForm
-from sqlalchemy.sql.sqltypes import String
 from wtforms import StringField, SubmitField, SelectField, IntegerField,\
     BooleanField, RadioField
-from wtforms import validators
 from wtforms.validators import DataRequired, Email
-from wtforms.widgets.core import Select
 
 from src.models import LikertOption, Question
 
@@ -49,63 +45,15 @@ def QuestionnaireForm(question_group, include_submit = True, submit_text = ""):
     return (BaseForm(), question_ids)
 
 
-# Form for open question
-class OpenQuestionForm(FlaskForm):
-    answer = StringField(validators=[DataRequired()])
-    submit = SubmitField('Bevestig')
-
-
-# Form for questions with an integer answer
-class IntQuestionForm(FlaskForm):
-    answer = IntegerField(validators=[DataRequired()])
-    submit = SubmitField('Bevestig')
-
-
-# Form for questions with a boolean answer
-class BoolQuestionForm(FlaskForm):
-    answer = BooleanField()
-    submit = SubmitField('Bevestig')
-
-
-# Form for questions with a multiple choice answer
-class MCQuestionForm(FlaskForm):
-    answer = SelectField('Selecteer een optie')
-    submit = SubmitField('Bevestig')
-
-
-# Form for Likert questions
-class LikertQuestionForm(FlaskForm):
-    nr = 0
-    answer = RadioField(choices=["option1", "option2", "option3"])
-    answer2 = RadioField()
-    answer3 = RadioField()
-    answer4 = RadioField()
-    answer5 = RadioField()
-    submit = SubmitField('Bevestig')
-
-
 # Form for questions that require an email adress input
 class EmailForm(FlaskForm):
     answer = StringField('Voer hier uw e-mailadres in als u het rapport toegestuurd wilt krijgen.', validators=[Email(), DataRequired()])
     submit = SubmitField('Bevestig')
 
 
-string_to_form = {
-    "open" : OpenQuestionForm,
-    "multiplechoice" : MCQuestionForm,
-    "bool" : BoolQuestionForm,
-    "likert" : LikertQuestionForm
-}
-
-def get_form(formtype):
-    return string_to_form[formtype]()
-
-
 class LoginForm(FlaskForm):
     code = StringField("Login code", validators=[DataRequired(message="Dit veld is verplicht")])
     submit = SubmitField("Akkoord en verder")
-
-
 
 
 branch_options = [
@@ -131,7 +79,6 @@ branch_options = [
     "Overige dienstenacitiveiten",
     "Huishoudens als werkgever, ongedifferentieerde goederen- en diensten, producerende activiteiten"
 ]
-
 
 
 class IntroFormNoListSelection(FlaskForm):
